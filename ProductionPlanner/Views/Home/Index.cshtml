@@ -2,7 +2,44 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div id="chart"></div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages':['corechart']});
+    
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+    
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
+        var jsonData = $.ajax({
+            url: "/Home/GetChartData",
+            dataType: "json",
+            async: false
+        }).responseText;
+        
+        var data = new google.visualization.DataTable(jsonData);
+        
+        google.charts.load('current', {'packages':['timeline']});
+        google.charts.setOnLoadCallback(drawChart);
+        
+        function drawChart() {
+            var container = document.getElementById('chart');
+            var chart = new google.visualization.Timeline(container);
+            
+            var options = {
+                timeline: { colorByRowLabel: true },
+                alternatingRowStyle: false,
+            };
+            
+            chart.draw(data, options);
+        }
+    }
+    </script>
+}
