@@ -10,13 +10,13 @@ namespace ProductionPlanner.Models
         {
             Days = new List<Day>
             {
-                new Day { DayName = "Monday", AvailableHours = 8},
-                new Day { DayName = "Tuesday", AvailableHours = 8 },
-                new Day { DayName = "Wednesday", AvailableHours = 8 },
-                new Day { DayName = "Thursday", AvailableHours = 8 },
-                new Day { DayName = "Friday", AvailableHours = 8 },
-                new Day { DayName = "Saturday", AvailableHours = 8 },
-                new Day { DayName = "Sunday", AvailableHours = 8 },
+                new Day { DayName = "Monday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 1) },
+                new Day { DayName = "Tuesday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 2) },
+                new Day { DayName = "Wednesday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 3) },
+                new Day { DayName = "Thursday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 4) },
+                new Day { DayName = "Friday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 5) },
+                /*new Day { DayName = "Saturday", AvailableHours = 8 },
+                new Day { DayName = "Sunday", AvailableHours = 8 },*/
             };
         }
         

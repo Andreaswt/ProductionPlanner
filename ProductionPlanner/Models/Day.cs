@@ -9,8 +9,8 @@ namespace ProductionPlanner.Models
         {
             HoursLeftToBook = AvailableHours;
         }
-        
-        public List<ProjectTask> Tasks { get; set; }
+
+        public List<ProjectTask> Tasks { get; set; } = new();
 
         public DateTime Date { get; set; }
 

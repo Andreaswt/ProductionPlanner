@@ -6,6 +6,7 @@ namespace ProductionPlanner.Models
 {
     public class Project
     {
+        public Guid Guid { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         
         public int Priority { get; set; }
@@ -31,12 +32,12 @@ namespace ProductionPlanner.Models
         {
             get
             {
-                List<DateTime> allStartDates = new();
+                List<DateTime> allDates = new();
                 foreach (ProjectTask task in Tasks)
                 {
-                    allStartDates.Add(task.StartDate);
+                    allDates.Add(task.Date);
                 }
-                return allStartDates.Min();
+                return allDates.Min();
             }
         }
 
@@ -44,12 +45,12 @@ namespace ProductionPlanner.Models
         {
             get
             {
-                List<DateTime> allEndDates = new();
+                List<DateTime> allDates = new();
                 foreach (ProjectTask task in Tasks)
                 {
-                    allEndDates.Add(task.StartDate);
+                    allDates.Add(task.Date);
                 }
-                return allEndDates.Max();
+                return allDates.Max();
             }
         }
 
