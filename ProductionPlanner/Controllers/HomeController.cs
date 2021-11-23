@@ -36,7 +36,7 @@ namespace ProductionPlanner.Controllers
 
             var assignedProjects = _plannerService.AssignProjects(mockProjects);
 
-            string json = _plannerService.ChartJsonGenerator(assignedProjects);
+            var json = _plannerService.ChartJsonGenerator(mockProjects);
 
             return Content(json);
         }

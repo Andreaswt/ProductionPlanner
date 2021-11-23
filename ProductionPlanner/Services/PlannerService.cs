@@ -143,7 +143,7 @@ namespace ProductionPlanner.Services
 
         public string ChartJsonGenerator(List<Project> projects)
         {
-            List<TimelineRow> timelineFormat = new List<TimelineRow>();
+            List<TimelineRow> timelineFormat = new();
 
             foreach (Project project in projects)
             {
@@ -153,8 +153,8 @@ namespace ProductionPlanner.Services
                     {
                         BarLabel = project.Name,
                         RowLabel = projectTask.Name,
-                        Start = projectTask.Date.AddHours(8 + projectTask.StartHour),
-                        End = projectTask.Date.AddHours(8 + projectTask.EndHour),
+                        Start = projectTask.Date.AddHours(projectTask.StartHour),
+                        End = projectTask.Date.AddHours(projectTask.EndHour),
                     };
 
                     timelineFormat.Add(t);
@@ -162,8 +162,8 @@ namespace ProductionPlanner.Services
             }
 
             var json = timelineFormat.ToGoogleDataTable()
-                .NewColumn(new Column(ColumnType.String, "Row label"), x => x.RowLabel)
                 .NewColumn(new Column(ColumnType.String, "Bar label"), x => x.BarLabel)
+                .NewColumn(new Column(ColumnType.String, "Row label"), x => x.RowLabel)
                 .NewColumn(new Column(ColumnType.Datetime, "Start"), x => x.Start)
                 .NewColumn(new Column(ColumnType.Datetime, "End"), x => x.End)
                 .Build()
@@ -171,7 +171,7 @@ namespace ProductionPlanner.Services
 
             return json;
         }
-
+        
         public List<Project> MockData()
         {
             ProjectTask t = new ProjectTask
@@ -180,6 +180,9 @@ namespace ProductionPlanner.Services
                 Duration = 5,
                 Name = "Opg 1",
                 Description = "Opgave 1",
+                StartHour = 8,
+                EndHour = 13,
+                Date = new DateTime(2021,12,1)
             };
             ProjectTask t1 = new ProjectTask
             {
@@ -187,6 +190,10 @@ namespace ProductionPlanner.Services
                 Duration = 2,
                 Name = "Opg 2",
                 Description = "Opgave 2",
+                StartHour = 13,
+                EndHour = 15,
+                Date = new DateTime(2021,12,1)
+
             };
             ProjectTask t2 = new ProjectTask
             {
@@ -194,6 +201,10 @@ namespace ProductionPlanner.Services
                 Duration = 3,
                 Name = "Opg 3",
                 Description = "Opgave 3",
+                StartHour = 15,
+                EndHour = 18,
+                Date = new DateTime(2021,12,1)
+
             };
             ProjectTask t3 = new ProjectTask
             {
@@ -201,34 +212,103 @@ namespace ProductionPlanner.Services
                 Duration = 10,
                 Name = "Opg 4",
                 Description = "Opgave 4",
+                StartHour = 8,
+                EndHour = 18,
+                Date = new DateTime(2021,12,2)
+
             };
+            
+            
+            
             ProjectTask t4 = new ProjectTask
             {
-                Priority = 5,
-                Duration = 8,
+                Priority = 1,
+                Duration = 2,
                 Name = "Opg 5",
                 Description = "Opgave 5",
+                StartHour = 8,
+                EndHour = 10,
+                Date = new DateTime(2021,12,3)
             };
             ProjectTask t5 = new ProjectTask
             {
-                Priority = 6,
+                Priority = 2,
                 Duration = 3,
                 Name = "Opg 6",
                 Description = "Opgave 6",
+                StartHour = 10,
+                EndHour = 13,
+                Date = new DateTime(2021,12,3)
+
             };
             ProjectTask t6 = new ProjectTask
             {
-                Priority = 7,
-                Duration = 15,
+                Priority = 3,
+                Duration = 3,
                 Name = "Opg 7",
                 Description = "Opgave 7",
+                StartHour = 13,
+                EndHour = 16,
+                Date = new DateTime(2021,12,3)
+
             };
             ProjectTask t7 = new ProjectTask
             {
-                Priority = 8,
-                Duration = 6,
+                Priority = 4,
+                Duration = 10,
                 Name = "Opg 8",
                 Description = "Opgave 8",
+                StartHour = 8,
+                EndHour = 18,
+                Date = new DateTime(2021,12,4)
+
+            };
+            
+            
+            
+            
+            ProjectTask t8 = new ProjectTask
+            {
+                Priority = 1,
+                Duration = 6,
+                Name = "Opg 9",
+                Description = "Opgave 9",
+                StartHour = 8,
+                EndHour = 14,
+                Date = new DateTime(2021,12,5)
+            };
+            ProjectTask t9 = new ProjectTask
+            {
+                Priority = 2,
+                Duration = 2,
+                Name = "Opg 10",
+                Description = "Opgave 10",
+                StartHour = 14,
+                EndHour = 16,
+                Date = new DateTime(2021,12,6)
+
+            };
+            ProjectTask t10 = new ProjectTask
+            {
+                Priority = 3,
+                Duration = 3,
+                Name = "Opg 11",
+                Description = "Opgave 11",
+                StartHour = 8,
+                EndHour = 11,
+                Date = new DateTime(2021,12,7)
+
+            };
+            ProjectTask t11 = new ProjectTask
+            {
+                Priority = 4,
+                Duration = 5,
+                Name = "Opg 12",
+                Description = "Opgave 12",
+                StartHour = 5,
+                EndHour = 16,
+                Date = new DateTime(2021,12,7)
+
             };
 
             List<ProjectTask> pt1 = new List<ProjectTask>();
@@ -236,28 +316,45 @@ namespace ProductionPlanner.Services
             pt1.Add(t1);
             pt1.Add(t2);
             pt1.Add(t3);
-
+            
             List<ProjectTask> pt2 = new List<ProjectTask>();
             pt2.Add(t4);
             pt2.Add(t5);
             pt2.Add(t6);
             pt2.Add(t7);
+            
+            List<ProjectTask> pt3 = new List<ProjectTask>();
+            pt1.Add(t8);
+            pt1.Add(t9);
+            pt1.Add(t10);
+            pt1.Add(t11);
+
 
             Project project1 = new Project
             {
+                Name = "Mockproject 1",
                 Priority = 1,
                 Tasks = pt1
             };
-
+            
             Project project2 = new Project
             {
+                Name = "Mockproject 2",
                 Priority = 2,
                 Tasks = pt2
+            };
+            
+            Project project3 = new Project
+            {
+                Name = "Mockproject 1",
+                Priority = 3,
+                Tasks = pt3
             };
 
             List<Project> projectList = new List<Project>();
             projectList.Add(project1);
             projectList.Add(project2);
+            projectList.Add(project3);
 
             return projectList;
         }

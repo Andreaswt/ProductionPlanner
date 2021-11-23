@@ -26,20 +26,27 @@
         
         var data = new google.visualization.DataTable(jsonData);
         
-        google.charts.load('current', {'packages':['timeline']});
-        google.charts.setOnLoadCallback(drawChart);
+          google.charts.load('current', {'packages':['timeline']});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
         
-        function drawChart() {
             var container = document.getElementById('chart');
             var chart = new google.visualization.Timeline(container);
             
-            var options = {
-                timeline: { colorByRowLabel: true },
-                alternatingRowStyle: false,
-            };
-            
-            chart.draw(data, options);
+        var options = {
+        hAxis: {
+          gridlines: {
+            count: -1,
+            units: {
+              days: {format: ['MMM dd']},
+              hours: {format: ['HH:mm', 'ha']},
+            }
+          },
         }
+        };
+        
+            chart.draw(data, options);
+          }
     }
     </script>
 }
