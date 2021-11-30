@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using ProductionPlanner.Interfaces;
 using ProductionPlanner.Models;
 using ProductionPlanner.Services;
+using ProductionPlanner.ViewModels;
 
 namespace ProductionPlanner.Controllers
 {
@@ -26,21 +27,12 @@ namespace ProductionPlanner.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            PlannerViewModel plannerViewModel = new();
+            var mockData = _plannerService.MockData();
+            plannerViewModel.Weeks = _plannerService.AssignProjects(mockData);
+            
+            return View(plannerViewModel);
         }
-        
-        public ActionResult GetChartData()
-        {
-            List<Project> taskList = new();
-            var mockProjects = _plannerService.MockData();
-
-            var assignedProjects = _plannerService.AssignProjects(mockProjects);
-
-            var json = _plannerService.ChartJsonGenerator(mockProjects);
-
-            return Content(json);
-        }
-
         public IActionResult Privacy()
         {
             return View();

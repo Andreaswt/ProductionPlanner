@@ -10,20 +10,17 @@ namespace ProductionPlanner.Models
         {
             Days = new List<Day>
             {
-                new Day { DayName = "Monday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 1) },
-                new Day { DayName = "Tuesday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 2) },
-                new Day { DayName = "Wednesday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 3) },
-                new Day { DayName = "Thursday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 4) },
-                new Day { DayName = "Friday", AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 5) },
-                /*new Day { DayName = "Saturday", AvailableHours = 8 },
-                new Day { DayName = "Sunday", AvailableHours = 8 },*/
+                new Day { DayName = "Monday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 1) },
+                new Day { DayName = "Tuesday", Priority = 2, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 2) },
+                new Day { DayName = "Wednesday", Priority = 3, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 3) },
+                new Day { DayName = "Thursday", Priority = 4, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 4) },
+                new Day { DayName = "Friday", Priority = 5, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 5) },
+                new Day { DayName = "Saturday", Priority = 6, AvailableHours = 0, HoursLeftToBook = 0, Date = new DateTime(2021, 12, 6) },
+                new Day { DayName = "Sunday", Priority = 7, AvailableHours = 0, HoursLeftToBook = 0, Date = new DateTime(2021, 12, 7) },
             };
         }
-        
         public List<Project> Projects { get; set; }
-
         public List<Day> Days { get; set; }
-
         public int HoursAvailable
         {
             get
@@ -37,15 +34,10 @@ namespace ProductionPlanner.Models
                 return totalHours;
             }
         }
-
         public DateTime StartDate { get; set; }
-
         public DateTime EndDate { get; set; }
-
         public bool Ferie { get; set; }
-
         public int WeekNo { get; set; }
-
         public void AddProjects(List<Project> projects)
         {
             foreach (Project p in projects)
@@ -53,7 +45,6 @@ namespace ProductionPlanner.Models
                 Projects.Add(p);
             }
         }
-
         public List<ProjectTask> GetAllTasksThisWeek()
         {
             List<ProjectTask> projectTasks = new List<ProjectTask>();
@@ -68,7 +59,6 @@ namespace ProductionPlanner.Models
             
             return projectTasks;
         }
-
         public List<ProjectTask> AssignProjects()
         {
             List<ProjectTask> remainingProjects = new List<ProjectTask>();

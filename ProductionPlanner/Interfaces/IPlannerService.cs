@@ -6,10 +6,7 @@ namespace ProductionPlanner.Interfaces
 {
     public interface IPlannerService
     {
-        public List<Project> AssignProjects(List<Project> projects);
-
-        public string ChartJsonGenerator(List<Project> projects);
-        
+        public List<Week> AssignProjects(List<Project> projects);
         public List<Project> MockData();
     }
 }
