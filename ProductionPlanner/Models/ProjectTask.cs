@@ -15,5 +15,6 @@ namespace ProductionPlanner.Models
         public DateTime Date { get; set; }
         public bool Assigned { get; set; }
         public string PersonAssigned { get; set; }
+        public bool Subtask { get; set; }
     }
 }

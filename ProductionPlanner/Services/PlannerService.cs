@@ -17,10 +17,69 @@ namespace ProductionPlanner.Services
         public List<Week> AssignProjects(List<Project> projects)
         {
             var sortedProjects = projects.OrderBy(t => t.Priority).ToList();
+            var sortedTasks = GetSortedTasks(sortedProjects);
+
+            List<Week> weeks = new();
+
+            Week week = new();
+            ProjectTask subtask = null;
+            foreach (ProjectTask task in sortedTasks)
+            {
+                subtask = task;
+                while (subtask != null)
+                {
+                    if (!subtask.Assigned)
+                    {
+                        // Check if all days are assigned, otherwise add new week
+                        if (week.TotalHoursLeftToBook == 0)
+                        {
+                            weeks.Add(week);
+                            week = new Week();
+                        }
+
+                        foreach (Day day in week.SortedDays)
+                        {
+                            // Assign task to day
+                            if (day.HoursLeftToBook >= subtask.Duration)
+                            {
+                                day.Tasks.Add(subtask);
+                                day.HoursLeftToBook -= subtask.Duration;
+                                subtask.Assigned = true;
+
+                                if (subtask.Subtask)
+                                    subtask = null;
+                                
+                                break;
+                            }
+                            else
+                            {
+                                day.HoursLeftToBook -= day.HoursLeftToBook;
+                                subtask.Assigned = true;
+
+                                day.Tasks.Add(subtask);
+                                subtask.Subtask = true;
+                                subtask.Assigned = false;
+                                subtask.Duration -= day.HoursLeftToBook; // TODO: run in debug mode
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (weeks.Count == 0)
+                weeks.Add(week);
+
+            return weeks;
+        }
+
+        private List<ProjectTask> GetSortedTasks(List<Project> projects)
+        {
             List<ProjectTask> sortedTasks = new();
 
             // Long list of tasks sorted by priority
-            foreach (Project project in sortedProjects)
+            foreach (Project project in projects)
             {
                 foreach (ProjectTask projectTask in project.Tasks)
                 {
@@ -28,45 +87,15 @@ namespace ProductionPlanner.Services
                 }
             }
 
-            List<Week> weeks = new();
-
-            Week week = new();
-            foreach (ProjectTask task in sortedTasks)
-            {
-                if (!task.Assigned)
-                {
-                    // Check if all days are assigned, otherwise add new week
-                    if (week.HoursAvailable == 0)
-                    {
-                        weeks.Add(week);
-                        week = new();
-                    }
-                    
-                    foreach (Day day in week.Days.OrderBy(d => d.Priority).ToList())
-                    {
-                        // Assign task to day
-                        if (day.HoursLeftToBook > task.Duration)
-                        {
-                            day.Tasks.Add(task);
-                            day.HoursLeftToBook -= task.Duration;
-                            task.Assigned = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (weeks.Count == 0)
-                weeks.Add(week);
-
-            return weeks;
+            return sortedTasks;
         }
 
-        public List<Project> MockData() 
+        public List<Project> MockData()
         {
             ProjectTask t = new ProjectTask
             {
                 Priority = 1,
-                Duration = 2,
+                Duration = 10,
                 Name = "Opg 1",
                 Description = "Opgave 1",
                 ProjectName = "Projekt 1",

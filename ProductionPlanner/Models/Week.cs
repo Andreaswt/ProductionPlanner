@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace ProductionPlanner.Models
@@ -21,14 +22,21 @@ namespace ProductionPlanner.Models
         }
         public List<Project> Projects { get; set; }
         public List<Day> Days { get; set; }
-        public int HoursAvailable
+        public List<Day> SortedDays
+        {
+            get
+            {
+                return Days.OrderBy(d => d.Priority).ToList();
+            }
+        }
+        public int TotalHoursLeftToBook
         {
             get
             {
                 var totalHours = 0;
                 foreach (Day day in Days)
                 {
-                    totalHours += day.AvailableHours;
+                    totalHours += day.HoursLeftToBook;
                 }
 
                 return totalHours;
@@ -58,11 +66,6 @@ namespace ProductionPlanner.Models
             }
             
             return projectTasks;
-        }
-        public List<ProjectTask> AssignProjects()
-        {
-            List<ProjectTask> remainingProjects = new List<ProjectTask>();
-            return remainingProjects;
         }
     }
 }
