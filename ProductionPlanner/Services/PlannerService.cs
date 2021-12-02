@@ -39,27 +39,49 @@ namespace ProductionPlanner.Services
 
                         foreach (Day day in week.SortedDays)
                         {
+                            if (day.HoursLeftToBook == 0)
+                                continue;
+                            
                             // Assign task to day
                             if (day.HoursLeftToBook >= subtask.Duration)
                             {
+                                subtask.Assigned = true;
                                 day.Tasks.Add(subtask);
                                 day.HoursLeftToBook -= subtask.Duration;
-                                subtask.Assigned = true;
-
-                                if (subtask.Subtask)
-                                    subtask = null;
+                                
+                                subtask = null;
                                 
                                 break;
                             }
                             else
                             {
+                                var totalTaskHours = subtask.Duration;
+                                var hoursBookedToday = day.HoursLeftToBook;
+                                subtask.Subtask = true;
+                                subtask.Duration = day.HoursLeftToBook;
                                 day.HoursLeftToBook -= day.HoursLeftToBook;
                                 subtask.Assigned = true;
-
+                                
                                 day.Tasks.Add(subtask);
-                                subtask.Subtask = true;
+                                
+                                // Deep clone subtask
+                                ProjectTask s = new ProjectTask
+                                {
+                                    Guid = subtask.Guid,
+                                    Name = subtask.Name,
+                                    ProjectName = subtask.ProjectName,
+                                    Progress = subtask.Progress,
+                                    Description = subtask.Description,
+                                    Priority = subtask.Priority,
+                                    Duration = subtask.Duration,
+                                    Date = subtask.Date,
+                                    Assigned = subtask.Assigned,
+                                    PersonAssigned = subtask.PersonAssigned,
+                                    Subtask = subtask.Subtask
+                                };
+                                subtask = s;
                                 subtask.Assigned = false;
-                                subtask.Duration -= day.HoursLeftToBook; // TODO: run in debug mode
+                                subtask.Duration = totalTaskHours - hoursBookedToday;
 
                                 break;
                             }
@@ -67,10 +89,10 @@ namespace ProductionPlanner.Services
                     }
                 }
             }
-
-            if (weeks.Count == 0)
-                weeks.Add(week);
-
+            
+            // If a week was partly filled, it wasn't added in the above foreach
+            weeks.Add(week);
+            
             return weeks;
         }
 
