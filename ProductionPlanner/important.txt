@@ -1,0 +1,2 @@
+Add to csproj file in prod:
+<Exec Command="npm run style:build" />

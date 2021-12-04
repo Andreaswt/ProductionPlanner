@@ -28,16 +28,14 @@ namespace ProductionPlanner.Controllers
         public IActionResult Index()
         {
             PlannerViewModel plannerViewModel = new();
-            var mockData = _plannerService.MockData();
-            plannerViewModel.Weeks = _plannerService.AssignProjects(mockData);
             
+            var mock = _plannerService.MockData();
+            
+            plannerViewModel.Weeks = _plannerService.AssignProjects(mock);
+
             return View(plannerViewModel);
         }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace ProductionPlanner.Models
 {
     public class Project
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         public Guid Guid { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         public int Priority { get; set; }

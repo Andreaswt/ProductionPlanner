@@ -5,6 +5,7 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Google.DataTable.Net.Wrapper;
 using Google.DataTable.Net.Wrapper.Extension;
+using ProductionPlanner.Data;
 using ProductionPlanner.Interfaces;
 using ProductionPlanner.Models;
 
@@ -12,8 +13,6 @@ namespace ProductionPlanner.Services
 {
     public class PlannerService : IPlannerService
     {
-        Week week = new();
-
         public List<Week> AssignProjects(List<Project> projects)
         {
             var sortedProjects = projects.OrderBy(t => t.Priority).ToList();
@@ -111,7 +110,7 @@ namespace ProductionPlanner.Services
 
             return sortedTasks;
         }
-
+        
         public List<Project> MockData()
         {
             ProjectTask t = new ProjectTask
@@ -122,7 +121,7 @@ namespace ProductionPlanner.Services
                 Description = "Opgave 1",
                 ProjectName = "Projekt 1",
                 Progress = "Todo",
-                PersonAssigned = "Donald"
+                PersonAssigned = "Donald",
             };
             ProjectTask t1 = new ProjectTask
             {

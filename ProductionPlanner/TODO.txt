@@ -1,0 +1,8 @@
+-Create attribute in plannerservice (list of weeks), thats set to mockdata in constructor. Use as local DB.
+
+-Create new task/project popup, that posts to controller (fetch, not jquery).
++Ability to choose between task and project in popup. 
+If project, add tasks to project, or use project template. If task, choose which project, and add task info.
+Use form and not post in js.
+
+-Page where you can add project templates. E.g a certain model to be produced.
