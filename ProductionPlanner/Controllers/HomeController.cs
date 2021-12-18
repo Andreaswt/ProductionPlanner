@@ -7,6 +7,7 @@ using Google.DataTable.Net.Wrapper;
 using Google.DataTable.Net.Wrapper.Extension;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProductionPlanner.Data;
 using ProductionPlanner.Interfaces;
 using ProductionPlanner.Models;
 using ProductionPlanner.Services;
@@ -18,20 +19,26 @@ namespace ProductionPlanner.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPlannerService _plannerService;
+        private readonly IDataService _dataService;
 
-        public HomeController(ILogger<HomeController> logger, IPlannerService plannerService)
+        public HomeController(ILogger<HomeController> logger, IPlannerService plannerService, IDataService dataService)
         {
             _logger = logger;
             _plannerService = plannerService;
+            _dataService = dataService;
         }
 
         public IActionResult Index()
         {
             PlannerViewModel plannerViewModel = new();
             
-            var mock = _plannerService.MockData();
-            
-            plannerViewModel.Weeks = _plannerService.AssignProjects(mock);
+            // var mock = _plannerService.MockData();
+            //
+            // // Save to database
+            // _dataService.SaveWeeks(_plannerService.AssignProjects(mock));
+
+            // Get from database
+            plannerViewModel.Weeks = _dataService.GetWeeks();
 
             return View(plannerViewModel);
         }

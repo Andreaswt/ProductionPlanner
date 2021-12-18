@@ -20,7 +20,7 @@ namespace ProductionPlanner.Services
 
             List<Week> weeks = new();
 
-            Week week = new();
+            Week week = AddNewWeek();
             ProjectTask subtask = null;
             foreach (ProjectTask task in sortedTasks)
             {
@@ -30,13 +30,13 @@ namespace ProductionPlanner.Services
                     if (!subtask.Assigned)
                     {
                         // Check if all days are assigned, otherwise add new week
-                        if (week.TotalHoursLeftToBook == 0)
+                        if (GetTotalHoursLeftToBook(week) == 0)
                         {
                             weeks.Add(week);
-                            week = new Week();
+                            week = AddNewWeek();
                         }
 
-                        foreach (Day day in week.SortedDays)
+                        foreach (Day day in GetSortedDays(week.Days))
                         {
                             if (day.HoursLeftToBook == 0)
                                 continue;
@@ -110,7 +110,44 @@ namespace ProductionPlanner.Services
 
             return sortedTasks;
         }
-        
+
+        private List<Day> GetSortedDays(List<Day> days)
+        {
+            return days.OrderBy(d => d.Priority).ToList();
+        }
+
+        private int GetTotalHoursLeftToBook(Week week)
+        {
+            var totalHours = 0;
+            foreach (Day day in week.Days)
+            {
+                totalHours += day.HoursLeftToBook;
+            }
+
+            return totalHours;
+        }
+
+        private Week AddNewWeek()
+        {
+            var days = new List<Day>
+            {
+                new Day { DayName = "Monday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 1), Tasks = new List<ProjectTask>()},
+                new Day { DayName = "Tuesday", Priority = 2, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 2), Tasks = new List<ProjectTask>() },
+                new Day { DayName = "Wednesday", Priority = 3, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 3), Tasks = new List<ProjectTask>() },
+                new Day { DayName = "Thursday", Priority = 4, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 4), Tasks = new List<ProjectTask>() },
+                new Day { DayName = "Friday", Priority = 5, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 5), Tasks = new List<ProjectTask>() },
+                /*new Day { DayName = "Saturday", Priority = 6, AvailableHours = 0, HoursLeftToBook = 0, Date = new DateTime(2021, 12, 6) },
+                new Day { DayName = "Sunday", Priority = 7, AvailableHours = 0, HoursLeftToBook = 0, Date = new DateTime(2021, 12, 7) },*/
+            };
+            
+            Week week = new Week
+            {
+                Days = days
+            };
+
+            return week;
+        }
+
         public List<Project> MockData()
         {
             ProjectTask t = new ProjectTask

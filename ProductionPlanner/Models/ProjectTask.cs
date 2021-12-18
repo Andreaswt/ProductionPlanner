@@ -7,7 +7,7 @@ namespace ProductionPlanner.Models
 {
     public class ProjectTask
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int Id { get; set; }
         public Guid Guid { get; set; } = Guid.NewGuid();
         public string? Name { get; set; }

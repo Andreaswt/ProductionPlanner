@@ -22,6 +22,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IPlannerService, PlannerService>();
+builder.Services.AddScoped<IDataService, DataService>();
 
 var app = builder.Build();
 

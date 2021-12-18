@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductionPlanner.Data;
 
@@ -10,12 +11,13 @@ using ProductionPlanner.Data;
 namespace ProductionPlanner.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211218210347_Relationships")]
+    partial class Relationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -237,9 +239,14 @@ namespace ProductionPlanner.Data.Migrations
                     b.Property<int?>("WeekId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("WeekId1")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("WeekId");
+
+                    b.HasIndex("WeekId1");
 
                     b.ToTable("Day");
                 });
@@ -369,6 +376,10 @@ namespace ProductionPlanner.Data.Migrations
                     b.HasOne("ProductionPlanner.Models.Week", null)
                         .WithMany("Days")
                         .HasForeignKey("WeekId");
+
+                    b.HasOne("ProductionPlanner.Models.Week", null)
+                        .WithMany("SortedDays")
+                        .HasForeignKey("WeekId1");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.ProjectTask", b =>
@@ -386,6 +397,8 @@ namespace ProductionPlanner.Data.Migrations
             modelBuilder.Entity("ProductionPlanner.Models.Week", b =>
                 {
                     b.Navigation("Days");
+
+                    b.Navigation("SortedDays");
                 });
 #pragma warning restore 612, 618
         }

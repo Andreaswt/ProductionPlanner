@@ -10,6 +10,9 @@ namespace ProductionPlanner.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            Database.Migrate();
         }
+
+        public DbSet<Week> Weeks { get; set; }
     }
 }
