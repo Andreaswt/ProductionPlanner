@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using ProductionPlanner.Data;
 using ProductionPlanner.Interfaces;
 using ProductionPlanner.Models;
@@ -23,7 +24,8 @@ namespace ProductionPlanner.Services
 
         public List<Week> GetWeeks()
         {
-            return _db.Weeks.ToList();
+            // Eager load related data
+            return _db.Weeks.Include(w => w.Days).ThenInclude(d => d.Tasks).ToList();
         }
     }
 }

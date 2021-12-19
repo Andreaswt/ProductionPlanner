@@ -42,7 +42,7 @@ namespace ProductionPlanner.Controllers
 
             return View(plannerViewModel);
         }
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
