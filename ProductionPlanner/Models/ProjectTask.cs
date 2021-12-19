@@ -9,7 +9,6 @@ namespace ProductionPlanner.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid Guid { get; set; } = Guid.NewGuid();
         public string? Name { get; set; }
         public string? ProjectName { get; set; }
         public string? Progress { get; set; }

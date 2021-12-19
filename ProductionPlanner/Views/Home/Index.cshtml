@@ -4,12 +4,12 @@
 
 @model ProductionPlanner.ViewModels.PlannerViewModel;
 
-<div class="min-h-full">
+<div x-data class="min-h-full">
 <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
 <div class="fixed inset-0 flex z-40 lg:hidden" role="dialog" aria-modal="true">
     <!--
     Off-canvas menu overlay, show/hide based on off-canvas menu state.
-
+    
     Entering: "transition-opacity ease-linear duration-300"
     From: "opacity-0"
     To: "opacity-100"
@@ -21,7 +21,7 @@
 
     <!--
     Off-canvas menu, show/hide based on off-canvas menu state.
-
+    
     Entering: "transition ease-in-out duration-300 transform"
     From: "-translate-x-full"
     To: "translate-x-0"
@@ -32,7 +32,7 @@
     <div class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
         <!--
         Close button, show/hide based on off-canvas menu state.
-
+    
         Entering: "ease-in-out duration-300"
         From: "opacity-0"
         To: "opacity-100"
@@ -57,10 +57,10 @@
             <nav class="px-2">
                 <div class="space-y-1">
                     <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:text-gray-900 hover:bg-gray-50" -->
-                    <a href="#" class="bg-gray-100 text-gray-900 group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md" aria-current="page">
+                    <a x-on:click="$store.page.showColumnView()" href="#" class="bg-gray-100 text-gray-900 group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md" aria-current="page">
                         <!--
                         Heroicon name: outline/home
-
+    
                         Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
                         -->
                         <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -69,7 +69,7 @@
                         Home
                     </a>
 
-                    <a href="#" class="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md">
+                    <a x-on:click="$store.page.showProjectTemplate()" class="text-gray-600 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md">
                         <!-- Heroicon name: outline/view-list -->
                         <svg class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
@@ -150,7 +150,7 @@
 
             <!--
             Dropdown menu, show/hide based on menu state.
-
+    
             Entering: "transition ease-out duration-100"
             From: "transform opacity-0 scale-95"
             To: "transform opacity-100 scale-100"
@@ -159,20 +159,20 @@
             To: "transform opacity-0 scale-95"
             -->
             @*<div class="z-10 mx-3 origin-top absolute right-0 left-0 mt-1 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
-          <div class="py-1" role="none">
-            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">View profile</a>
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-1">Settings</a>
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-2">Notifications</a>
-          </div>
-          <div class="py-1" role="none">
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-3">Get desktop app</a>
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-4">Support</a>
-          </div>
-          <div class="py-1" role="none">
-            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-5">Logout</a>
-          </div>
-        </div>*@
+              <div class="py-1" role="none">
+                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">View profile</a>
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-1">Settings</a>
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-2">Notifications</a>
+              </div>
+              <div class="py-1" role="none">
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-3">Get desktop app</a>
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-4">Support</a>
+              </div>
+              <div class="py-1" role="none">
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-5">Logout</a>
+              </div>
+            </div>*@
         </div>
         <!-- Sidebar Search -->
         <div class="px-3 mt-3">
@@ -191,10 +191,10 @@
         <nav class="px-3 mt-6">
             <div class="space-y-1">
                 <!-- Current: "bg-gray-200 text-gray-900", Default: "text-gray-700 hover:text-gray-900 hover:bg-gray-50" -->
-                <a href="#" class="bg-gray-200 text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md" aria-current="page">
+                <a x-on:click="$store.page.showColumnView()" href="#" class="bg-gray-200 text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md" aria-current="page">
                     <!--
                     Heroicon name: outline/home
-
+    
                     Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
                     -->
                     <svg class="text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -203,7 +203,7 @@
                     Home
                 </a>
 
-                <a href="#" class="text-gray-700 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                <a x-on:click="$store.page.showProjectTemplate()" href="#" class="text-gray-700 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                     <!-- Heroicon name: outline/view-list -->
                     <svg class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
@@ -290,7 +290,7 @@
 
                     <!--
                     Dropdown menu, show/hide based on menu state.
-
+    
                     Entering: "transition ease-out duration-100"
                     From: "transform opacity-0 scale-95"
                     To: "transform opacity-100 scale-100"
@@ -318,73 +318,28 @@
         </div>
     </div>
     <main class="flex-1">
-        <!-- Page title & actions -->
-        <div class="border-b border-gray-200 px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
-            <div class="flex-1 min-w-0">
-                <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">
-                    Home
-                </h1>
-            </div>
-            <div class="py-4 flex sm:mt-0 sm:ml-4">
-                <button type="button" class="order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-0 sm:ml-3">
-                    Share
-                </button>
-                <button type="button" class="order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1 sm:ml-3">
-                    Create
-                </button>
-            </div>
+        <div x-show="$store.page.current == 'columnView'">
+            <partial name="../PlanViews/Columns.cshtml"/>
         </div>
-        <partial name="../PlanViews/Columns.cshtml"/>
+        <div x-show="$store.page.current == 'projectTemplate'">
+            @await Component.InvokeAsync("ProjectTemplates")
+        </div>
     </main>
 </div>
 </div>
 
-
-@*<div id="chart"></div>*@
-
-@section Scripts
-{
-    <script type="text/javascript">
-
-    // Load the Visualization API and the corechart package.
-    google.charts.load('current', {'packages':['corechart']});
-    
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(drawChart);
-    
-    // Callback that creates and populates a data table,
-    // instantiates the pie chart, passes in the data and
-    // draws it.
-    function drawChart() {
-        var jsonData = $.ajax({
-            url: "/Home/GetChartData",
-            dataType: "json",
-            async: false
-        }).responseText;
-        
-        var data = new google.visualization.DataTable(jsonData);
-        
-          google.charts.load('current', {'packages':['timeline']});
-          google.charts.setOnLoadCallback(drawChart);
-          function drawChart() {
-        
-            var container = document.getElementById('chart');
-            var chart = new google.visualization.Timeline(container);
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('page', {
+            current: "columnView",
+ 
+            showColumnView() {
+                this.current = "columnView"
+            },
             
-        var options = {
-        hAxis: {
-          gridlines: {
-            count: -1,
-            units: {
-              days: {format: ['MMM dd']},
-              hours: {format: ['HH:mm', 'ha']},
-            }
-          },
-        }
-        };
-        
-            chart.draw(data, options);
-          }
-    }
-    </script>
-}
+            showProjectTemplate() {
+                this.current = "projectTemplate"
+            },
+        })
+    })
+</script>

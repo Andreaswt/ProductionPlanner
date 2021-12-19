@@ -66,7 +66,6 @@ namespace ProductionPlanner.Services
                                 // Deep clone subtask
                                 ProjectTask s = new ProjectTask
                                 {
-                                    Guid = subtask.Guid,
                                     Name = subtask.Name,
                                     ProjectName = subtask.ProjectName,
                                     Progress = subtask.Progress,
