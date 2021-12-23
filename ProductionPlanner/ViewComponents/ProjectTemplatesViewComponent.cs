@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProductionPlanner.Data;
 using ProductionPlanner.Models;
+using ProductionPlanner.ViewModels;
 
 namespace ProductionPlanner.ViewComponents
 {
@@ -19,8 +19,12 @@ namespace ProductionPlanner.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            List<ProjectTemplate> projectTemplates = await GetProjectTemplates();
-            return View(projectTemplates);
+            ProjectTemplatesViewModel projectTemplatesViewModel = new ProjectTemplatesViewModel
+            {
+                ProjectTemplates = await GetProjectTemplates()
+            };
+            
+            return View(projectTemplatesViewModel);
         }
 
         private Task<List<ProjectTemplate>> GetProjectTemplates()
@@ -38,6 +42,8 @@ namespace ProductionPlanner.ViewComponents
             ProjectTemplate p1 = new ProjectTemplate
             {
                 Name = "ProjectTemplate1",
+                Description = "This is a tempalte for model xyz",
+                Owner = "Admin",
                 ProjectTasks = new List<ProjectTask>
                 {
                     new ProjectTask
@@ -76,6 +82,8 @@ namespace ProductionPlanner.ViewComponents
             ProjectTemplate p2 = new ProjectTemplate
             {
                 Name = "ProjectTemplate1",
+                Description = "This is a tempalte for model xyz",
+                Owner = "Admin",
                 ProjectTasks = new List<ProjectTask>
                 {
                     new ProjectTask
@@ -115,7 +123,7 @@ namespace ProductionPlanner.ViewComponents
             projectTemplates.Add(p1);
             projectTemplates.Add(p2);
             
-            _db.ProjectTemplates.AddRange(projectTemplates);
+            _db.ProjectTemplates.UpdateRange(projectTemplates);
             _db.SaveChanges();
         }
     }
