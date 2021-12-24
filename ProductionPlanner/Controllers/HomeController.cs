@@ -46,9 +46,10 @@ namespace ProductionPlanner.Controllers
         [HttpPost]
         public IActionResult NewProjectTemplate(ProjectTemplate projectTemplate)
         {
-            PlannerViewModel plannerViewModel = new();
-            plannerViewModel.Weeks = _dataService.GetWeeks();
-            return View("Index", plannerViewModel);
+            // PlannerViewModel plannerViewModel = new();
+            // plannerViewModel.Weeks = _dataService.GetWeeks();
+            Console.Write("Hej");
+            return new EmptyResult();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

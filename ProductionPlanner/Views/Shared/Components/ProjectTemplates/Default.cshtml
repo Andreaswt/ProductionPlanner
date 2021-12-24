@@ -1,5 +1,6 @@
 @{
     ViewData["Title"] = "Project templates";
+    Layout = "_Layout";
 }
 
 @model ProductionPlanner.ViewModels.ProjectTemplatesViewModel;
@@ -203,7 +204,7 @@
                 x-transition:leave-start="translate-x-0"
                 x-transition:leave-end="translate-x-full"
                 class="w-screen max-w-2xl">
-                <form method="post" asp-controller="Home" asp-action="NewProjectTemplate" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
+                <form method="post" data-ajax="true" data-ajax-method="post" data-ajax-success="newTemplateSuccess" asp-controller="Home" asp-action="NewProjectTemplate" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                     <div class="flex-1 overflow-y-auto">
                         <!-- Header -->
                         <div class="px-4 py-6 bg-gray-50 sm:px-6">
@@ -352,43 +353,48 @@
     </li>
 </template>
 
-
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.store('projectTemplate', {
-            currentProject: "",
-            currentTask: "",
-            newTemplate: false,
- 
-            showProject(id) {
-                this.currentProject = id
-            },
-            showTask(id) {
-                this.currentTask = id
-            },
-            showNewTemplate(state) {
-                this.newTemplate = state
-            },
+@section Scripts
+{
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('projectTemplate', {
+                currentProject: "",
+                currentTask: "",
+                newTemplate: false,
+     
+                showProject(id) {
+                    this.currentProject = id
+                },
+                showTask(id) {
+                    this.currentTask = id
+                },
+                showNewTemplate(state) {
+                    this.newTemplate = state
+                },
+            });
         });
-    });
-    
-    let no = 1;
-    function addNewTask() {
-        let template = document.getElementById("task_row_template");
-        let listItem = template.content.cloneNode(true);
         
-        // Add html to page
-        listItem.children[0].id = "task_row_"+no;
-        document.getElementById('add_new_task_list').appendChild(listItem);
+        let no = 1;
+        function addNewTask() {
+            let template = document.getElementById("task_row_template");
+            let listItem = template.content.cloneNode(true);
+            
+            // Add html to page
+            listItem.children[0].id = "task_row_"+no;
+            document.getElementById('add_new_task_list').appendChild(listItem);
+            
+            // Set html attributes of the new list item
+            document.getElementById("task_row_"+no).querySelector('input[name="Name"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Name");
+            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Priority");
+            document.getElementById("task_row_"+no).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Duration");
+            document.getElementById("task_row_"+no).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Description");
+            
+            // Increment number, so every form is unique
+            no++;
+        }
         
-        // Set html attributes of the new list item
-        document.getElementById("task_row_"+no).querySelector('input[name="Name"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Name");
-        document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Priority");
-        document.getElementById("task_row_"+no).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Duration");
-        document.getElementById("task_row_"+no).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Description");
-        
-        // Increment number, so every form is unique
-        no++;
-    }
-   
-</script>
+        function newTemplateSuccess() {
+            console.log("works");
+        }
+    </script>
+}

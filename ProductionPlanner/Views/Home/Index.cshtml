@@ -249,19 +249,18 @@ This example requires updating your template:
         </div>
     </div>
     <div class="flex-1 relative z-0 flex overflow-hidden">
-        <main x-show="$store.page.current == 'columnView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+        <main x-cloak x-show="$store.page.current == 'columnView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
             <!-- Start main area-->
             <partial name="../PlanViews/Columns.cshtml"/>
             <!-- End main area -->
         </main>
 
-        <div x-show="$store.page.current == 'projectTemplate'" class="flex-1 relative z-0 flex overflow-hidden">
+        <div x-cloak x-show="$store.page.current == 'projectTemplate'" class="flex-1 relative z-0 flex overflow-hidden">
             @await Component.InvokeAsync("ProjectTemplates")
         </div>
     </div>
 </div>
 </div>
-
 
 <script>
     document.addEventListener('alpine:init', () => {
