@@ -1,0 +1,229 @@
+@{
+    ViewData["Title"] = "New project templates";
+    Layout = "_Layout";
+}
+@model ProductionPlanner.ViewModels.ProjectTemplatesViewModel;
+
+<div x-cloak x-on:keyup.escape="$store.page.showNewTemplate(false)" x-show="$store.page.newTemplate == true" class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 overflow-hidden">
+        <!-- Background overlay, show/hide based on slide-over state. -->
+        <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16">
+
+            <div
+                x-cloak
+                x-on:click.outside="$store.page.showNewTemplate(false)"
+                x-show="$store.page.newTemplate == true"
+                x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+                x-transition:enter-start="translate-x-full"
+                x-transition:enter-end="translate-x-0"
+                x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                x-transition:leave-start="translate-x-0"
+                x-transition:leave-end="translate-x-full"
+                class="w-screen max-w-2xl">
+                
+                <form id="newTemplateForm" asp-controller="Home" asp-action="NewProjectTemplate" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
+                    <div class="flex-1 overflow-y-auto">
+                        <!-- Header -->
+                        <div class="px-4 py-6 bg-gray-50 sm:px-6">
+                            <div class="flex items-start justify-between space-x-3">
+                                <div class="space-y-1">
+                                    <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
+                                        New project
+                                    </h2>
+                                    <p class="text-sm text-gray-500">
+                                        Get started by filling in the information below to create your new project.
+                                    </p>
+                                </div>
+                                <div class="h-7 flex items-center">
+                                    <button x-on:click="$store.page.showNewTemplate(false)" type="button" class="text-gray-400 hover:text-gray-500">
+                                        <span class="sr-only">Close panel</span>
+                                        <!-- Heroicon name: outline/x -->
+                                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divider container -->
+                        <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-gray-200">
+                            <!-- Project name -->
+                            <div class="space-y-1 px-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+                                <div>
+                                    <label for="project-name" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2">
+                                        Name
+                                    </label>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    @Html.EditorFor(x => x.ProjectTemplate.Name, new {htmlAttributes = new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"}})
+                                    @Html.ValidationMessageFor(x => x.ProjectTemplate.Name)
+                                </div>
+                            </div>
+
+                            <!-- Project description -->
+                            <div class="space-y-1 px-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+                                <div>
+                                    <label for="project-description" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2">
+                                        Description
+                                    </label>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    @Html.EditorFor(x => x.ProjectTemplate.Description, new {htmlAttributes = new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"}})
+                                    @Html.ValidationMessageFor(x => x.ProjectTemplate.Description)
+                                </div>
+                            </div>
+
+                            <!-- Team members -->
+                            <div class="space-y-2 px-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:px-6 sm:py-5">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">
+                                        Tasks in project
+                                    </h3>
+                                </div>
+                                <div class="col-span-3">
+                                    <div class="flex flex-col space-x-2">
+                                        <button id="add_new_task" onclick="addNewTask()" type="button" class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-3 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <span class="mt-2 block text-sm font-medium text-gray-900">
+                                                Add new task to template
+                                            </span>
+                                        </button>
+
+                                        <ul id="add_new_task_list" role="list" class="divide-y divide-gray-200">
+                                            <li id="task_row" class="py-4">
+                                                <div class="bg-white">
+                                                    <div class="grid grid-cols-6 gap-6">
+                                                        <div class="col-span-6 sm:col-span-3">
+                                                            <label class="block text-sm font-medium text-gray-700">Name</label>
+                                                            @Html.EditorFor(x => x.ProjectTemplate.ProjectTasks[0].Name, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
+                                                            @Html.ValidationMessageFor(x => x.ProjectTemplate.ProjectTasks[0].Name)
+                                                        </div>
+
+                                                        <div class="col-span-6 sm:col-span-3">
+                                                            <label class="block text-sm font-medium text-gray-700">Priority</label>
+                                                            @* Value attribute can't be set with tag helper *@
+                                                            <input type="number" value="0" asp-for="ProjectTemplate.ProjectTasks[0].Priority" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                                                            @Html.ValidationMessageFor(x => x.ProjectTemplate.ProjectTasks[0].Priority)
+                                                        </div>
+
+                                                        <div class="col-span-6 sm:col-span-3">
+                                                            <label class="block text-sm font-medium text-gray-700">Duration in hours</label>
+                                                            @Html.EditorFor(x => x.ProjectTemplate.ProjectTasks[0].Duration, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
+                                                            @Html.ValidationMessageFor(x => x.ProjectTemplate.ProjectTasks[0].Duration)
+                                                        </div>
+
+                                                        <div class="col-span-6 sm:col-span-4">
+                                                            <label class="block text-sm font-medium text-gray-700">Description</label>
+                                                            @Html.TextAreaFor(x => x.ProjectTemplate.ProjectTasks[0].Description, new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"})
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex-shrink-0 px-4 border-t border-gray-200 py-5 sm:px-6">
+                        <div class="space-x-3 flex justify-end">
+                            <button x-on:click="$store.page.showNewTemplate(false)" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Cancel
+                            </button>
+                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="task_row_template">
+    <li id="task_row_" class="py-4">
+        <div class="bg-white">
+            <div class="grid grid-cols-6 gap-6">
+                <div class="col-span-6 sm:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700">Name</label>
+                    <input required class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-box single-line valid" data-val="true" data-val-required="Please enter a valid task name" name="Name" type="text" value="" aria-invalid="false">
+                </div>
+
+                <div class="col-span-6 sm:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700">Priority</label>
+                    <input required type="number" value="0" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md valid" data-val="true" data-val-range="Please enter valid priority" data-val-range-max="2147483647" data-val-range-min="0" data-val-required="The Priority field is required." name="Priority" aria-invalid="false">
+                </div>
+
+                <div class="col-span-6 sm:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700">Duration in hours</label>
+                    <input required class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-box single-line valid" data-val="true" data-val-range="Please enter valid duration" data-val-range-max="2147483647" data-val-range-min="0" data-val-required="The Duration field is required." name="Duration" type="number" value="" aria-invalid="false">
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" name="Description"></textarea>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+
+@section Scripts
+{
+    <script>
+        $("#newTemplateForm").submit(function(e) {
+        
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        
+            var form = $(this);
+            if (form.valid()) {
+                var url = form.attr('action');
+                $.ajax({
+                       type: "POST",
+                       url: url,
+                       data: form.serialize(), // serializes the form's elements.
+                       success: function(data)
+                       {                                                      
+                            // Reload part of page that shows template
+                            var container = $("#projectTemplateContainer");
+                            container.html(data);
+                            
+                            // Hide side overlay after page has been reloaded
+                            Alpine.store('page').showNewTemplate(false);
+                            
+                            // Reset the form, so the overlay can be used again
+                            $('#newTemplateForm').trigger("reset");
+                       }
+                     });
+            }
+        });
+        
+        var no = 1;
+        function addNewTask() {
+            let template = document.getElementById("task_row_template");
+            let listItem = template.content.cloneNode(true);
+            
+            // Add html to page
+            listItem.children[0].id = "task_row_"+no;
+            document.getElementById('add_new_task_list').appendChild(listItem);
+            
+            // Set html attributes of the new list item
+            document.getElementById("task_row_"+no).querySelector('input[name="Name"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Name");
+            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').value = no;
+            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Priority");
+            document.getElementById("task_row_"+no).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Duration");
+            document.getElementById("task_row_"+no).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Description");
+            
+            // Increment number, so every form is unique
+            no++;
+        }
+        
+    </script>
+}

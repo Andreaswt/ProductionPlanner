@@ -250,20 +250,21 @@ This example requires updating your template:
     </div>
     <div class="flex-1 relative z-0 flex overflow-hidden">
         <main x-cloak x-show="$store.page.current == 'columnView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
-            <!-- Start main area-->
             <partial name="../PlanViews/Columns.cshtml"/>
-            <!-- End main area -->
         </main>
 
-        <div x-cloak x-show="$store.page.current == 'projectTemplate'" class="flex-1 relative z-0 flex overflow-hidden">
+        <div id="projectTemplateContainer" x-cloak x-show="$store.page.current == 'projectTemplate'" class="flex-1 relative z-0 flex overflow-hidden">
             @await Component.InvokeAsync("ProjectTemplates")
         </div>
+        
+        @await Component.InvokeAsync("NewProjectTemplate")
     </div>
 </div>
 </div>
 
 <script>
     document.addEventListener('alpine:init', () => {
+        /* ---General page navigation--- */
         Alpine.store('page', {
             current: "columnView",
  
@@ -273,6 +274,22 @@ This example requires updating your template:
             
             showProjectTemplate() {
                 this.current = "projectTemplate"
+            },
+            
+            
+            /* ---Template page--- */
+            currentProject: "",
+            currentTask: "",
+            newTemplate: false,
+ 
+            showProject(id) {
+                this.currentProject = id
+            },
+            showTask(id) {
+                this.currentTask = id
+            },
+            showNewTemplate(state) {
+                this.newTemplate = state
             },
         })
     })

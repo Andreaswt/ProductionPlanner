@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Google.DataTable.Net.Wrapper;
 using Google.DataTable.Net.Wrapper.Extension;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using ProductionPlanner.Data;
 using ProductionPlanner.Interfaces;
@@ -46,11 +47,19 @@ namespace ProductionPlanner.Controllers
         [HttpPost]
         public IActionResult NewProjectTemplate(ProjectTemplate projectTemplate)
         {
-            // PlannerViewModel plannerViewModel = new();
-            // plannerViewModel.Weeks = _dataService.GetWeeks();
-            Console.WriteLine("HFD");
+            if (!ModelState.IsValid)
+                return new EmptyResult();
+                
+            _dataService.SaveProjectTemplate(projectTemplate);
             
-            return Ok();
+            return ViewComponent("ProjectTemplates");
+        }
+        
+        [HttpPost]
+        public IActionResult DeleteProjectTemplate(int id)
+        {
+            _dataService.DeleteProjectTemplate(id);
+            return ViewComponent("ProjectTemplates");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
