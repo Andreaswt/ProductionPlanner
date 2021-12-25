@@ -23,7 +23,7 @@ namespace ProductionPlanner.ViewComponents
             {
                 ProjectTemplates = await GetProjectTemplates()
             };
-            
+
             return View(projectTemplatesViewModel);
         }
 

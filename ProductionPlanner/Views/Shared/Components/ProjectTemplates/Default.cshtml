@@ -204,7 +204,8 @@
                 x-transition:leave-start="translate-x-0"
                 x-transition:leave-end="translate-x-full"
                 class="w-screen max-w-2xl">
-                <form method="post" data-ajax="true" data-ajax-method="post" data-ajax-success="newTemplateSuccess" asp-controller="Home" asp-action="NewProjectTemplate" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
+                
+                <form data-ajax="true" data-ajax-method="post" data-ajax-success="newTemplateSuccess" asp-controller="Home" asp-action="NewProjectTemplate" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                     <div class="flex-1 overflow-y-auto">
                         <!-- Header -->
                         <div class="px-4 py-6 bg-gray-50 sm:px-6">
@@ -251,8 +252,8 @@
                                     </label>
                                 </div>
                                 <div class="sm:col-span-2">
-                                    @Html.EditorFor(x => x.ProjectTemplate.Description, new {htmlAttributes = new {@type = "text", @class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"}})
-                                    @* <textarea id="project-description" name="project-description" asp-for="ProjectTemplate.Name" rows="3" class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"></textarea> *@
+                                    @* <textarea id="project-description" name="project-description" asp-for="ProjectTemplate.Description" rows="3" class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"></textarea> *@
+                                    @Html.EditorFor(x => x.ProjectTemplate.Description, new {htmlAttributes = new {@type = "text", @class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"}})
                                 </div>
                             </div>
 
@@ -264,7 +265,7 @@
                                     </h3>
                                 </div>
                                 <div class="col-span-3">
-                                    <div class="flex flex-column space-x-2">
+                                    <div class="flex flex-col space-x-2">
                                         <button id="add_new_task" onclick="addNewTask()" type="button" class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-3 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -385,6 +386,7 @@
             
             // Set html attributes of the new list item
             document.getElementById("task_row_"+no).querySelector('input[name="Name"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Name");
+            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').value = no;
             document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Priority");
             document.getElementById("task_row_"+no).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Duration");
             document.getElementById("task_row_"+no).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Description");
@@ -394,7 +396,7 @@
         }
         
         function newTemplateSuccess() {
-            console.log("works");
+            Alpine.store('projectTemplate').showNewTemplate(false);
         }
     </script>
 }

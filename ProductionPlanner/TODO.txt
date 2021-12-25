@@ -1,3 +1,4 @@
+-Set default priority to 0 on forst project task.
 -Make create new template ajax
 -Create the new template in the backend, via service
 

@@ -48,8 +48,9 @@ namespace ProductionPlanner.Controllers
         {
             // PlannerViewModel plannerViewModel = new();
             // plannerViewModel.Weeks = _dataService.GetWeeks();
-            Console.Write("Hej");
-            return new EmptyResult();
+            Console.WriteLine("HFD");
+            
+            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
