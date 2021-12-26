@@ -258,39 +258,51 @@ This example requires updating your template:
         </div>
         
         @await Component.InvokeAsync("NewProjectTemplate")
+        
+        <div id="editTemplateContainer">
+            @* Fetched projects will be injected here *@
+        </div>
+        
     </div>
 </div>
 </div>
 
-<script>
-    document.addEventListener('alpine:init', () => {
-        /* ---General page navigation--- */
-        Alpine.store('page', {
-            current: "columnView",
- 
-            showColumnView() {
-                this.current = "columnView"
-            },
-            
-            showProjectTemplate() {
-                this.current = "projectTemplate"
-            },
-            
-            
-            /* ---Template page--- */
-            currentProject: "",
-            currentTask: "",
-            newTemplate: false,
- 
-            showProject(id) {
-                this.currentProject = id
-            },
-            showTask(id) {
-                this.currentTask = id
-            },
-            showNewTemplate(state) {
-                this.newTemplate = state
-            },
+@section Scripts
+{
+    <script>
+        document.addEventListener('alpine:init', () => {
+            /* ---General page navigation--- */
+            Alpine.store('page', {
+                current: "columnView",
+     
+                showColumnView() {
+                    this.current = "columnView"
+                },
+                
+                showProjectTemplate() {
+                    this.current = "projectTemplate"
+                },
+                
+                
+                /* ---Template page--- */
+                currentProject: "",
+                currentTask: "",
+                newTemplate: false,
+                editTemplate: false,
+     
+                showProject(id) {
+                    this.currentProject = id
+                },
+                showTask(id) {
+                    this.currentTask = id
+                },
+                showNewTemplate(state) {
+                    this.newTemplate = state
+                },
+                showEditTemplate(state) {
+                    this.editTemplate = state
+                },
+            })
         })
-    })
-</script>
+    </script>
+}

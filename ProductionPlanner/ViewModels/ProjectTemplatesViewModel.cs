@@ -8,6 +8,6 @@ namespace ProductionPlanner.ViewModels
         public List<ProjectTemplate> ProjectTemplates { get; set; }
         
         // New project template, being posted back to controller
-        public ProjectTemplate ProjectTemplate { get; set; }
+        public ProjectTemplate? ProjectTemplate { get; set; }
     }
 }

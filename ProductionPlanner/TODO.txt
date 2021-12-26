@@ -1,5 +1,3 @@
--Delete project template (AJAX)
-
 -Add new project page
 
 Later:

@@ -42,12 +42,15 @@ namespace ProductionPlanner.Services
             _db.SaveChanges();
         }
         
+        public void EditProjectTemplate(ProjectTemplate projectTemplate)
+        {
+            _db.ProjectTemplates.Update(projectTemplate);
+            _db.SaveChanges();
+        }
+        
         public void DeleteProjectTemplate(int id)
         {
-            ProjectTemplate p = new ProjectTemplate
-            {
-                Id = id
-            };
+            ProjectTemplate p = _db.ProjectTemplates.Include(p => p.ProjectTasks).First(x => x.Id == id);
             _db.ProjectTemplates.Remove(p);
             _db.SaveChanges();
         }

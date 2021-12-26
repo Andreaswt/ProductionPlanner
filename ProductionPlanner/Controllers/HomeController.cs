@@ -51,7 +51,22 @@ namespace ProductionPlanner.Controllers
                 return new EmptyResult();
                 
             _dataService.SaveProjectTemplate(projectTemplate);
-            
+            return ViewComponent("ProjectTemplates");
+        }
+        
+        [HttpGet]
+        public IActionResult UpdateProjectTemplate(int templateId)
+        {
+            return ViewComponent("EditProjectTemplate", new {id = templateId});
+        }
+        
+        [HttpPost]
+        public IActionResult UpdateProjectTemplate(ProjectTemplate projectTemplate)
+        {
+            if (!ModelState.IsValid)
+                return new EmptyResult();
+                
+            _dataService.EditProjectTemplate(projectTemplate);
             return ViewComponent("ProjectTemplates");
         }
         
