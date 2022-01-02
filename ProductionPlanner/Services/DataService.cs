@@ -29,8 +29,13 @@ namespace ProductionPlanner.Services
             return _db.Weeks.Include(w => w.Days).ThenInclude(d => d.Tasks).ToList();
         }
 
-        public void SaveProjectTemplate(ProjectTemplate projectTemplate)
+        public bool SaveProjectTemplate(ProjectTemplate projectTemplate)
         {
+            // If project with name already exists, return false
+            if (_db.ProjectTemplates.Any(x => x.Name == projectTemplate.Name))
+                return false;
+            
+            // Otherwise create the projectTemplate
             foreach (var projectTask in projectTemplate.ProjectTasks)
             {
                 projectTask.ProjectName = projectTemplate.Name;
@@ -40,11 +45,21 @@ namespace ProductionPlanner.Services
 
             _db.ProjectTemplates.Add(projectTemplate);
             _db.SaveChanges();
+
+            return true;
         }
         
         public void EditProjectTemplate(ProjectTemplate projectTemplate)
         {
-            _db.ProjectTemplates.Update(projectTemplate);
+            // Get existing
+            var existing = _db.ProjectTemplates.First(x => x.Name == projectTemplate.Name);
+
+            // Update inputted changes from form
+            existing.Description = projectTemplate.Description;
+            existing.ProjectTasks = projectTemplate.ProjectTasks;
+            
+            // Store the updated object
+            _db.ProjectTemplates.Update(existing);
             _db.SaveChanges();
         }
         

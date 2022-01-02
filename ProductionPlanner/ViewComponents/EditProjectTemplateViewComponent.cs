@@ -20,12 +20,7 @@ namespace ProductionPlanner.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int id)
         {
-            ProjectTemplatesViewModel projectTemplatesViewModel = new ProjectTemplatesViewModel
-            {
-                ProjectTemplate = await GetProjectTemplates(id)
-            };
-
-            return View(projectTemplatesViewModel);
+            return View(await GetProjectTemplates(id));
         }
 
         private Task<ProjectTemplate?> GetProjectTemplates(int id)

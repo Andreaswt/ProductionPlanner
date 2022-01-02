@@ -1,4 +1,10 @@
--Add new project page
++Projecttemplate cant be named the same
+
+-Create new project
++Choose from project templates
++Reuseable viewcomponent popup
+
+-Automapper setup for updating project template
 
 Later:
 -Project templates: show users which options are selected (Alpine/tailwind)

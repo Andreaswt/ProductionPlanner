@@ -26,8 +26,4 @@
     <ItemGroup>
       <Folder Include="wwwroot\lib\jquery-ajax-unobtrusive" />
     </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Views\Shared\Components\NewProjectTemplate\Default.cshtml" />
-    </ItemGroup>
 </Project>

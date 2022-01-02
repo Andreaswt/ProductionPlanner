@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Google.DataTable.Net.Wrapper;
 using Google.DataTable.Net.Wrapper.Extension;
@@ -49,9 +51,18 @@ namespace ProductionPlanner.Controllers
         {
             if (!ModelState.IsValid)
                 return new EmptyResult();
-                
-            _dataService.SaveProjectTemplate(projectTemplate);
-            return ViewComponent("ProjectTemplates");
+            
+            var state = _dataService.SaveProjectTemplate(projectTemplate);
+            state = false;
+            
+            if (state)
+            {
+                Response.StatusCode = (int)HttpStatusCode.OK;
+                return ViewComponent("ProjectTemplates");
+            }
+
+            Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            return Json("A project template already exists with this name.", MediaTypeNames.Text.Plain);
         }
         
         [HttpGet]
@@ -65,7 +76,7 @@ namespace ProductionPlanner.Controllers
         {
             if (!ModelState.IsValid)
                 return new EmptyResult();
-                
+
             _dataService.EditProjectTemplate(projectTemplate);
             return ViewComponent("ProjectTemplates");
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,19 +18,10 @@ namespace ProductionPlanner.ViewComponents
             _db = applicationDbContext;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public Task<IViewComponentResult> InvokeAsync()
         {
-            ProjectTemplatesViewModel projectTemplatesViewModel = new ProjectTemplatesViewModel
-            {
-                ProjectTemplates = await GetProjectTemplates()
-            };
-
-            return View(projectTemplatesViewModel);
-        }
-
-        private Task<List<ProjectTemplate>> GetProjectTemplates()
-        {
-            return _db.ProjectTemplates.Include(p => p.ProjectTasks).ToListAsync();
+            ProjectTemplate p = new();
+            return Task.FromResult<IViewComponentResult>(View(p));
         }
     }
 }

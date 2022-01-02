@@ -7,7 +7,7 @@ namespace ProductionPlanner.Interfaces
     {
         public void SaveWeeks(List<Week> weeks);
         public List<Week> GetWeeks();
-        public void SaveProjectTemplate(ProjectTemplate projectTemplate);
+        public bool SaveProjectTemplate(ProjectTemplate projectTemplate);
         public void EditProjectTemplate(ProjectTemplate projectTemplate);
         public void DeleteProjectTemplate(int id);
     }

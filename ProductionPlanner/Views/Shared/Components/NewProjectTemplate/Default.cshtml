@@ -1,7 +1,4 @@
-@{
-    Layout = "_Layout";
-}
-@model ProductionPlanner.ViewModels.ProjectTemplatesViewModel;
+@model ProductionPlanner.Models.ProjectTemplate;
 
 <div x-cloak x-on:keyup.escape="$store.page.showNewTemplate(false)" x-show="$store.page.newTemplate == true" class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <div class="absolute inset-0 overflow-hidden">
@@ -45,9 +42,34 @@
                                 </div>
                             </div>
                         </div>
-
+                        
                         <!-- Divider container -->
                         <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-gray-200">
+                        
+                            <!-- This example requires Tailwind CSS v2.0+ -->
+                            <div id="newTemplateSubmissionErrorBox" class="bg-red-50 p-4">
+                              <div class="flex">
+                                <div class="flex-shrink-0">
+                                  <!-- Heroicon name: solid/x-circle -->
+                                  <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                  </svg>
+                                </div>
+                                <div class="ml-3">
+                                  <h3 class="text-sm font-medium text-red-800">
+                                    There were an errors with your submission
+                                  </h3>
+                                  <div class="mt-2 text-sm text-red-700">
+                                    <ul role="list" class="list-disc pl-5 space-y-1">
+                                      <li id="newTemplateSubmissionError">
+                                        
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        
                             <!-- Project name -->
                             <div class="space-y-1 px-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                                 <div>
@@ -56,8 +78,8 @@
                                     </label>
                                 </div>
                                 <div class="sm:col-span-2">
-                                    @Html.EditorFor(x => x.ProjectTemplate.Name, new {htmlAttributes = new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"}})
-                                    @Html.ValidationMessageFor(x => x.ProjectTemplate.Name)
+                                    @Html.EditorFor(x => x.Name, new {htmlAttributes = new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"}})
+                                    @Html.ValidationMessageFor(x => x.Name)
                                 </div>
                             </div>
 
@@ -69,8 +91,8 @@
                                     </label>
                                 </div>
                                 <div class="sm:col-span-2">
-                                    @Html.EditorFor(x => x.ProjectTemplate.Description, new {htmlAttributes = new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"}})
-                                    @Html.ValidationMessageFor(x => x.ProjectTemplate.Description)
+                                    @Html.EditorFor(x => x.Description, new {htmlAttributes = new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"}})
+                                    @Html.ValidationMessageFor(x => x.Description)
                                 </div>
                             </div>
 
@@ -98,26 +120,26 @@
                                                     <div class="grid grid-cols-6 gap-6">
                                                         <div class="col-span-6 sm:col-span-3">
                                                             <label class="block text-sm font-medium text-gray-700">Name</label>
-                                                            @Html.EditorFor(x => x.ProjectTemplate.ProjectTasks[0].Name, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
-                                                            @Html.ValidationMessageFor(x => x.ProjectTemplate.ProjectTasks[0].Name)
+                                                            @Html.EditorFor(x => x.ProjectTasks[0].Name, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
+                                                            @Html.ValidationMessageFor(x => x.ProjectTasks[0].Name)
                                                         </div>
 
                                                         <div class="col-span-6 sm:col-span-3">
                                                             <label class="block text-sm font-medium text-gray-700">Priority</label>
                                                             @* Value attribute can't be set with tag helper *@
-                                                            <input type="number" value="0" asp-for="ProjectTemplate.ProjectTasks[0].Priority" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                                                            @Html.ValidationMessageFor(x => x.ProjectTemplate.ProjectTasks[0].Priority)
+                                                            <input type="number" value="0" asp-for="ProjectTasks[0].Priority" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                                                            @Html.ValidationMessageFor(x => x.ProjectTasks[0].Priority)
                                                         </div>
 
                                                         <div class="col-span-6 sm:col-span-3">
                                                             <label class="block text-sm font-medium text-gray-700">Duration in hours</label>
-                                                            @Html.EditorFor(x => x.ProjectTemplate.ProjectTasks[0].Duration, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
-                                                            @Html.ValidationMessageFor(x => x.ProjectTemplate.ProjectTasks[0].Duration)
+                                                            @Html.EditorFor(x => x.ProjectTasks[0].Duration, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
+                                                            @Html.ValidationMessageFor(x => x.ProjectTasks[0].Duration)
                                                         </div>
 
                                                         <div class="col-span-6 sm:col-span-4">
                                                             <label class="block text-sm font-medium text-gray-700">Description</label>
-                                                            @Html.TextAreaFor(x => x.ProjectTemplate.ProjectTasks[0].Description, new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"})
+                                                            @Html.TextAreaFor(x => x.ProjectTasks[0].Description, new {@class = "block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"})
                                                         </div>
                                                     </div>
                                                 </div>
@@ -174,55 +196,37 @@
     </li>
 </template>
 
-@section Scripts
-{
-    <script>
+<script>
+    document.addEventListener('DOMContentLoaded', function (event) {
         $("#newTemplateForm").submit(function(e) {
-        
             e.preventDefault(); // avoid to execute the actual submit of the form.
         
-            var form = $(this);
+            let form = $(this);
             if (form.valid()) {
-                var url = form.attr('action');
+                let url = form.attr('action');
                 $.ajax({
                        type: "POST",
                        url: url,
+                       contentType: 'application/json; charset=utf-8',
                        data: form.serialize(), // serializes the form's elements.
                        success: function(data)
-                       {                                                      
-                            // Reload part of page that shows template
-                            var container = $("#projectTemplateContainer");
+                       {
+                            // Reload part of page that shows templates
+                            let container = $("#projectTemplateContainer");
                             container.html(data);
-                            
+        
                             // Hide side overlay after page has been reloaded
                             Alpine.store('page').showNewTemplate(false);
-                            
+        
                             // Reset the form, so the overlay can be used again
                             $('#newTemplateForm').trigger("reset");
+                       },
+                       error: function (response)
+                       {
+                           console.log(response)
                        }
                      });
             }
         });
-        
-        var no = 1;
-        function addNewTask() {
-            let template = document.getElementById("task_row_template");
-            let listItem = template.content.cloneNode(true);
-            
-            // Add html to page
-            listItem.children[0].id = "task_row_"+no;
-            document.getElementById('add_new_task_list').appendChild(listItem);
-            
-            // Set html attributes of the new list item
-            document.getElementById("task_row_"+no).querySelector('input[name="Name"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Name");
-            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').value = no;
-            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Priority");
-            document.getElementById("task_row_"+no).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Duration");
-            document.getElementById("task_row_"+no).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Description");
-            
-            // Increment number, so every form is unique
-            no++;
-        }
-        
-    </script>
-}
+    });
+</script>
