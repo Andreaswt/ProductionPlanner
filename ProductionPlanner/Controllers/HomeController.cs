@@ -83,6 +83,22 @@ namespace ProductionPlanner.Controllers
             _dataService.DeleteProjectTemplate(id);
             return ViewComponent("ProjectTemplates");
         }
+        
+        [HttpGet]
+        public IActionResult GetProjectFromTemplate(int templateId)
+        {
+            return ViewComponent("NewProjectFromTemplate", new {id = templateId});
+        }
+        
+        [HttpPost]
+        public IActionResult CreateProjectFromTemplate(ProjectTemplate projectTemplate)
+        {
+            if (!ModelState.IsValid)
+                return new EmptyResult();
+
+            _dataService.CreateProjectFromTemplate(projectTemplate);
+            return ViewComponent("ProjectTemplates");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

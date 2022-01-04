@@ -13,12 +13,15 @@
                     <p class="mt-1 max-w-2xl text-sm text-gray-500">
                         View and edit an individual project task below
                     </p>
+                    <button onclick="newProjectFromTemplate(@projectTemplate.Id)" type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1 mt-2">
+                        Create project from this template
+                    </button>
                 </div>
                 <div class="px-4 py-5 sm:px-6">
                     <button onclick="deleteProjectTemplate(@projectTemplate.Id)" type="button" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm">
                         Delete
                     </button>
-                    <button onclick="editProjectTemplate(@projectTemplate.Id)" type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1 sm:ml-3">
+                    <button onclick="editProjectTemplate(@projectTemplate.Id)" type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1 sm:ml-3">
                         Edit
                     </button>
                 </div>
@@ -198,6 +201,24 @@
                         // Show the edit menu, when the template has finished loaded
                         setTimeout(function() {
                             Alpine.store('page').showEditTemplate(true);
+                        }, 1);
+                   }
+                 });
+        }
+        
+        function newProjectFromTemplate(id) {
+            $.ajax({
+                   type: "GET",
+                   url: "Home/GetProjectFromTemplate?templateId=" + id,
+                   success: function(data)
+                   {
+                        // Update the page with the fetched template
+                        var container = $("#newProjectFromTemplateContainer");
+                        container.html(data);
+                        
+                        // Show the edit menu, when the template has finished loaded
+                        setTimeout(function() {
+                            Alpine.store('page').showNewProjectFromTemplate(true);
                         }, 1);
                    }
                  });

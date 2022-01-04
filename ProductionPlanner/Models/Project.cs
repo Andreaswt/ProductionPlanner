@@ -10,6 +10,7 @@ namespace ProductionPlanner.Models
     {
         public int ProjectId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public int Priority { get; set; }
         public List<ProjectTask> Tasks { get; set; }
         public int TotalHours

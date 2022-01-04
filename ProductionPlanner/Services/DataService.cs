@@ -69,5 +69,29 @@ namespace ProductionPlanner.Services
             _db.ProjectTemplates.Remove(p);
             _db.SaveChanges();
         }
+        
+        public bool CreateProjectFromTemplate(ProjectTemplate projectTemplate)
+        {
+            // If project with name already exists, return false
+            if (_db.Projects.Any(x => x.Name == projectTemplate.Name))
+                return false;
+            
+            Project project = new();
+            
+            // TODO: map projecttemplate to project, and store in DB
+            
+            // Otherwise create the projectTemplate
+            foreach (var projectTask in projectTemplate.ProjectTasks)
+            {
+                projectTask.ProjectName = projectTemplate.Name;
+            }
+
+            projectTemplate.Owner = "Admin"; // TODO: get logged in user name
+
+            _db.ProjectTemplates.Add(projectTemplate);
+            _db.SaveChanges();
+
+            return true;
+        }
     }
 }
