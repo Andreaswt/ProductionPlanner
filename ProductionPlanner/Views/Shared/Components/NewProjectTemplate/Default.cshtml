@@ -47,7 +47,7 @@
                         <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-gray-200">
                         
                             <!-- This example requires Tailwind CSS v2.0+ -->
-                            <div id="newTemplateSubmissionErrorBox" class="bg-red-50 p-4">
+                            <div id="newTemplateSubmissionErrorBox" class="bg-red-50 p-4 hidden">
                               <div class="flex">
                                 <div class="flex-shrink-0">
                                   <!-- Heroicon name: solid/x-circle -->
@@ -207,24 +207,26 @@
                 $.ajax({
                        type: "POST",
                        url: url,
-                       contentType: 'application/json; charset=utf-8',
                        data: form.serialize(), // serializes the form's elements.
                        success: function(data)
                        {
-                            // Reload part of page that shows templates
-                            let container = $("#projectTemplateContainer");
-                            container.html(data);
-        
-                            // Hide side overlay after page has been reloaded
-                            Alpine.store('page').showNewTemplate(false);
-        
-                            // Reset the form, so the overlay can be used again
-                            $('#newTemplateForm').trigger("reset");
+                           if (!data.hasOwnProperty('message')) {
+                               // Reload part of page that shows templates
+                               let container = $("#projectTemplateContainer");
+                               container.html(data.view);
+           
+                               // Hide side overlay after page has been reloaded
+                               Alpine.store('page').showNewTemplate(false);
+           
+                               // Reset the form, so the overlay can be used again
+                               $('#newTemplateForm').trigger("reset");
+                               $('#newTemplateSubmissionErrorBox').hide();
+                           }
+                           else {
+                               $('#newTemplateSubmissionErrorBox').show();
+                               $('#newTemplateSubmissionError').text(data.message);
+                           }
                        },
-                       error: function (response)
-                       {
-                           console.log(response)
-                       }
                      });
             }
         });

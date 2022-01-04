@@ -52,17 +52,13 @@ namespace ProductionPlanner.Controllers
             if (!ModelState.IsValid)
                 return new EmptyResult();
             
-            var state = _dataService.SaveProjectTemplate(projectTemplate);
-            state = false;
-            
-            if (state)
+            var success = _dataService.SaveProjectTemplate(projectTemplate);
+            if (success)
             {
-                Response.StatusCode = (int)HttpStatusCode.OK;
                 return ViewComponent("ProjectTemplates");
             }
-
-            Response.StatusCode = (int) HttpStatusCode.BadRequest;
-            return Json("A project template already exists with this name.", MediaTypeNames.Text.Plain);
+            
+            return Json( new {Message = "A project template already exists with this name." });
         }
         
         [HttpGet]

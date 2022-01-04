@@ -11,6 +11,8 @@ namespace ProductionPlanner.Models
         [Required(ErrorMessage = "Please enter a valid task name")]
         public string? Name { get; set; }
         
+        [Required]
+        [DataType(DataType.MultilineText)]
         public string? Description { get; set; }
         
         [Required]

@@ -1,5 +1,3 @@
-+Projecttemplate cant be named the same
-
 -Create new project
 +Choose from project templates
 +Reuseable viewcomponent popup
