@@ -1,9 +1,8 @@
 -New project
 +Create new project without template. Use newprojecttemplate as boilerplate.
 +Create new project from template. Use editprojecttemplate as boilerplate.
-// TODO: map projecttemplate to project, and store in DB
 
--Automapper setup for updating project template
+-Remove tasks when creating project templates
 
 Later:
 -Project templates: show users which options are selected (Alpine/tailwind)

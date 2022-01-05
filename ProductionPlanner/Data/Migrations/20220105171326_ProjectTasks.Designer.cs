@@ -8,11 +8,11 @@ using ProductionPlanner.Data;
 
 #nullable disable
 
-namespace ProductionPlanner.Data.Migrations
+namespace ProductionPlanner.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211226103722_26dec1")]
-    partial class _26dec1
+    [Migration("20220105171326_ProjectTasks")]
+    partial class ProjectTasks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -246,6 +246,32 @@ namespace ProductionPlanner.Data.Migrations
                     b.ToTable("Day");
                 });
 
+            modelBuilder.Entity("ProductionPlanner.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
+                });
+
             modelBuilder.Entity("ProductionPlanner.Models.ProjectTask", b =>
                 {
                     b.Property<int>("Id")
@@ -268,7 +294,6 @@ namespace ProductionPlanner.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PersonAssigned")
@@ -279,6 +304,9 @@ namespace ProductionPlanner.Data.Migrations
 
                     b.Property<string>("Progress")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ProjectName")
                         .HasColumnType("TEXT");
@@ -293,9 +321,11 @@ namespace ProductionPlanner.Data.Migrations
 
                     b.HasIndex("DayId");
 
+                    b.HasIndex("ProjectId");
+
                     b.HasIndex("ProjectTemplateId");
 
-                    b.ToTable("ProjectTask");
+                    b.ToTable("ProjectTasks");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.ProjectTemplate", b =>
@@ -404,6 +434,10 @@ namespace ProductionPlanner.Data.Migrations
                         .WithMany("Tasks")
                         .HasForeignKey("DayId");
 
+                    b.HasOne("ProductionPlanner.Models.Project", null)
+                        .WithMany("ProjectTasks")
+                        .HasForeignKey("ProjectId");
+
                     b.HasOne("ProductionPlanner.Models.ProjectTemplate", null)
                         .WithMany("ProjectTasks")
                         .HasForeignKey("ProjectTemplateId");
@@ -412,6 +446,11 @@ namespace ProductionPlanner.Data.Migrations
             modelBuilder.Entity("ProductionPlanner.Models.Day", b =>
                 {
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("ProductionPlanner.Models.Project", b =>
+                {
+                    b.Navigation("ProjectTasks");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.ProjectTemplate", b =>

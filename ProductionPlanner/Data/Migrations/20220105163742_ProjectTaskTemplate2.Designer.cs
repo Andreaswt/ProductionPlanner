@@ -8,11 +8,11 @@ using ProductionPlanner.Data;
 
 #nullable disable
 
-namespace ProductionPlanner.Data.Migrations
+namespace ProductionPlanner.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211218220502_18dec1")]
-    partial class _18dec1
+    [Migration("20220105163742_ProjectTaskTemplate2")]
+    partial class ProjectTaskTemplate2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -246,6 +246,32 @@ namespace ProductionPlanner.Data.Migrations
                     b.ToTable("Day");
                 });
 
+            modelBuilder.Entity("ProductionPlanner.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
+                });
+
             modelBuilder.Entity("ProductionPlanner.Models.ProjectTask", b =>
                 {
                     b.Property<int>("Id")
@@ -267,9 +293,6 @@ namespace ProductionPlanner.Data.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -282,8 +305,14 @@ namespace ProductionPlanner.Data.Migrations
                     b.Property<string>("Progress")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ProjectName")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProjectTemplateId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Subtask")
                         .HasColumnType("INTEGER");
@@ -292,7 +321,33 @@ namespace ProductionPlanner.Data.Migrations
 
                     b.HasIndex("DayId");
 
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectTemplateId");
+
                     b.ToTable("ProjectTask");
+                });
+
+            modelBuilder.Entity("ProductionPlanner.Models.ProjectTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProjectTemplates");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.Week", b =>
@@ -378,11 +433,29 @@ namespace ProductionPlanner.Data.Migrations
                     b.HasOne("ProductionPlanner.Models.Day", null)
                         .WithMany("Tasks")
                         .HasForeignKey("DayId");
+
+                    b.HasOne("ProductionPlanner.Models.Project", null)
+                        .WithMany("ProjectTasks")
+                        .HasForeignKey("ProjectId");
+
+                    b.HasOne("ProductionPlanner.Models.ProjectTemplate", null)
+                        .WithMany("ProjectTasks")
+                        .HasForeignKey("ProjectTemplateId");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.Day", b =>
                 {
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("ProductionPlanner.Models.Project", b =>
+                {
+                    b.Navigation("ProjectTasks");
+                });
+
+            modelBuilder.Entity("ProductionPlanner.Models.ProjectTemplate", b =>
+                {
+                    b.Navigation("ProjectTasks");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.Week", b =>

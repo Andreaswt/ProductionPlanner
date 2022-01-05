@@ -96,8 +96,13 @@ namespace ProductionPlanner.Controllers
             if (!ModelState.IsValid)
                 return new EmptyResult();
 
-            _dataService.CreateProjectFromTemplate(projectTemplate);
-            return ViewComponent("ProjectTemplates");
+            var success = _dataService.CreateProjectFromTemplate(projectTemplate);
+            if (success)
+            {
+                return ViewComponent("ProjectTemplates");
+            }
+            
+            return Json( new {Message = "A project already exist with this name." });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

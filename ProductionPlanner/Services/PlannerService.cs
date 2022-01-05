@@ -101,7 +101,7 @@ namespace ProductionPlanner.Services
             // Long list of tasks sorted by priority
             foreach (Project project in projects)
             {
-                foreach (ProjectTask projectTask in project.Tasks)
+                foreach (ProjectTask projectTask in project.ProjectTasks)
                 {
                     sortedTasks.Add(projectTask);
                 }
@@ -295,21 +295,21 @@ namespace ProductionPlanner.Services
             {
                 Name = "Mockproject 1",
                 Priority = 1,
-                Tasks = pt1
+                ProjectTasks = pt1
             };
 
             Project project2 = new Project
             {
                 Name = "Mockproject 2",
                 Priority = 2,
-                Tasks = pt2
+                ProjectTasks = pt2
             };
 
             Project project3 = new Project
             {
                 Name = "Mockproject 3",
                 Priority = 3,
-                Tasks = pt3
+                ProjectTasks = pt3
             };
 
             List<Project> projectList = new List<Project>();

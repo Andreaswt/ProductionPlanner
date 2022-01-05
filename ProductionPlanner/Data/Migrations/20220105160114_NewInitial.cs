@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace ProductionPlanner.Data.Migrations
+namespace ProductionPlanner.Migrations
 {
-    public partial class _18dec3 : Migration
+    public partial class NewInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

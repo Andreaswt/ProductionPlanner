@@ -8,17 +8,19 @@ namespace ProductionPlanner.Models
 {
     public class Project
     {
-        public int ProjectId { get; set; }
+        [Key]
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Owner { get; set; }
         public int Priority { get; set; }
-        public List<ProjectTask> Tasks { get; set; }
+        public List<ProjectTask> ProjectTasks { get; set; }
         public int TotalHours
         {
             get
             {
                 int totalHours = 0;
-                foreach (ProjectTask task in Tasks)
+                foreach (ProjectTask task in ProjectTasks)
                 {
                     totalHours += task.Duration;
                 }
@@ -27,7 +29,7 @@ namespace ProductionPlanner.Models
         }
         public List<ProjectTask> GetSortedProjectTasks()
         {
-            return Tasks.OrderBy(t => t.Priority).ToList();
+            return ProjectTasks.OrderBy(t => t.Priority).ToList();
         }
     }
 }

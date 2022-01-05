@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace ProductionPlanner.Data.Migrations
+namespace ProductionPlanner.Migrations
 {
-    public partial class _25dec3 : Migration
+    public partial class ProjectTaskTemplate2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

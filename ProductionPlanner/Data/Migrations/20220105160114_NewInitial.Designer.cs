@@ -8,16 +8,16 @@ using ProductionPlanner.Data;
 
 #nullable disable
 
-namespace ProductionPlanner.Data.Migrations
+namespace ProductionPlanner.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211218202849_Initial")]
-    partial class Initial
+    [Migration("20220105160114_NewInitial")]
+    partial class NewInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -230,9 +230,6 @@ namespace ProductionPlanner.Data.Migrations
                     b.Property<string>("DayName")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("HoursLeftToBook")
                         .HasColumnType("INTEGER");
 
@@ -242,16 +239,37 @@ namespace ProductionPlanner.Data.Migrations
                     b.Property<int?>("WeekId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("WeekId1")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("WeekId");
 
-                    b.HasIndex("WeekId1");
-
                     b.ToTable("Day");
+                });
+
+            modelBuilder.Entity("ProductionPlanner.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.ProjectTask", b =>
@@ -275,9 +293,6 @@ namespace ProductionPlanner.Data.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -290,8 +305,14 @@ namespace ProductionPlanner.Data.Migrations
                     b.Property<string>("Progress")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ProjectName")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProjectTemplateId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Subtask")
                         .HasColumnType("INTEGER");
@@ -300,7 +321,33 @@ namespace ProductionPlanner.Data.Migrations
 
                     b.HasIndex("DayId");
 
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectTemplateId");
+
                     b.ToTable("ProjectTask");
+                });
+
+            modelBuilder.Entity("ProductionPlanner.Models.ProjectTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProjectTemplates");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.Week", b =>
@@ -311,9 +358,6 @@ namespace ProductionPlanner.Data.Migrations
 
                     b.Property<bool>("Ferie")
                         .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("WeekNo")
                         .HasColumnType("INTEGER");
@@ -382,10 +426,6 @@ namespace ProductionPlanner.Data.Migrations
                     b.HasOne("ProductionPlanner.Models.Week", null)
                         .WithMany("Days")
                         .HasForeignKey("WeekId");
-
-                    b.HasOne("ProductionPlanner.Models.Week", null)
-                        .WithMany("SortedDays")
-                        .HasForeignKey("WeekId1");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.ProjectTask", b =>
@@ -393,6 +433,14 @@ namespace ProductionPlanner.Data.Migrations
                     b.HasOne("ProductionPlanner.Models.Day", null)
                         .WithMany("Tasks")
                         .HasForeignKey("DayId");
+
+                    b.HasOne("ProductionPlanner.Models.Project", null)
+                        .WithMany("ProjectTasks")
+                        .HasForeignKey("ProjectId");
+
+                    b.HasOne("ProductionPlanner.Models.ProjectTemplate", null)
+                        .WithMany("ProjectTasks")
+                        .HasForeignKey("ProjectTemplateId");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.Day", b =>
@@ -400,11 +448,19 @@ namespace ProductionPlanner.Data.Migrations
                     b.Navigation("Tasks");
                 });
 
+            modelBuilder.Entity("ProductionPlanner.Models.Project", b =>
+                {
+                    b.Navigation("ProjectTasks");
+                });
+
+            modelBuilder.Entity("ProductionPlanner.Models.ProjectTemplate", b =>
+                {
+                    b.Navigation("ProjectTasks");
+                });
+
             modelBuilder.Entity("ProductionPlanner.Models.Week", b =>
                 {
                     b.Navigation("Days");
-
-                    b.Navigation("SortedDays");
                 });
 #pragma warning restore 612, 618
         }

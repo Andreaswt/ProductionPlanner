@@ -16,5 +16,6 @@ namespace ProductionPlanner.Data
         public DbSet<Week> Weeks { get; set; }
         public DbSet<ProjectTemplate> ProjectTemplates { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectTask> ProjectTasks { get; set; }
     }
 }

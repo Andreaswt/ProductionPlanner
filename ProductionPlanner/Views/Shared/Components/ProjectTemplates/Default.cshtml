@@ -1,6 +1,33 @@
 @model ProductionPlanner.ViewModels.ProjectTemplatesViewModel;
 
 <main x-data class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+        @{
+            if (!Model.ProjectTemplates.Any())
+            {
+                <div class="flex h-full">
+                    <div class="text-center m-auto">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">No tasks to show</h3>
+                        <p class="mt-1 text-sm text-gray-500">
+                            Get started by creating a new project template.
+                        </p>
+                        <div class="mt-6">
+                            <button x-on:click="$store.page.showNewTemplate(true)" type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <!-- Heroicon name: solid/plus -->
+                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                </svg>
+                                New Template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+        
     <!-- Start main area-->
     @{
         foreach (var projectTemplate in Model.ProjectTemplates)
@@ -117,7 +144,7 @@
 <aside x-data class="hidden relative xl:order-first xl:flex xl:flex-col flex-shrink-0 w-96 border-r border-gray-200 overflow-y-auto">
     <!-- Start secondary column (hidden on smaller screens) -->
 
-    <div class="h-full relative flex flex-col w-96 border-r border-gray-200 bg-gray-100">
+    <div class="h-full relative flex flex-col w-96 border-r bg-white">
         <div class="flex-shrink-0">
             <div class="h-36 bg-white px-6 flex flex-col justify-center">
                 <div class="flex items-baseline space-x-3">
@@ -234,13 +261,27 @@
             document.getElementById('add_new_task_list').appendChild(listItem);
             
             // Set html attributes of the new list item
-            document.getElementById("task_row_"+no).querySelector('input[name="Name"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Name");
+            document.getElementById("task_row_"+no).querySelector('input[name="Name"]').setAttribute("name", "ProjectTasks[" + no + "].Name");
             document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').value = no;
-            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Priority");
-            document.getElementById("task_row_"+no).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Duration");
-            document.getElementById("task_row_"+no).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTemplate.ProjectTasks[" + no + "].Description");
+            document.getElementById("task_row_"+no).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTasks[" + no + "].Priority");
+            document.getElementById("task_row_"+no).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTasks[" + no + "].Duration");
+            document.getElementById("task_row_"+no).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTasks[" + no + "].Description");
+            document.getElementById("task_row_"+no).querySelector('button').setAttribute("onclick", "removeTask(" + no + ")");
             
             // Increment number, so every form is unique
             no++;
         }
+        
+        function removeTask(id) {
+            $('#task_row_'+id).remove();
+        }
+        
+        function removeAllTasks(number) {
+            for(let i = 1; i < number; i++) {
+              removeTask(i);
+            }
+            
+            no = 1;
+        }
+        
 </script>

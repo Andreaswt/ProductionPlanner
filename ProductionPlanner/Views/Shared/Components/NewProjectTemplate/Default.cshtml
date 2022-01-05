@@ -17,7 +17,7 @@
                 x-transition:leave-start="translate-x-0"
                 x-transition:leave-end="translate-x-full"
                 class="w-screen max-w-2xl">
-                
+
                 <form id="newTemplateForm" asp-controller="Home" asp-action="NewProjectTemplate" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                     <div class="flex-1 overflow-y-auto">
                         <!-- Header -->
@@ -25,10 +25,10 @@
                             <div class="flex items-start justify-between space-x-3">
                                 <div class="space-y-1">
                                     <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
-                                        New project
+                                        New project template
                                     </h2>
                                     <p class="text-sm text-gray-500">
-                                        Get started by filling in the information below to create your new project.
+                                        Get started by filling in the information below to create your new project template.
                                     </p>
                                 </div>
                                 <div class="h-7 flex items-center">
@@ -42,34 +42,34 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Divider container -->
                         <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-gray-200">
-                        
+
                             <!-- This example requires Tailwind CSS v2.0+ -->
                             <div id="newTemplateSubmissionErrorBox" class="bg-red-50 p-4 hidden">
-                              <div class="flex">
-                                <div class="flex-shrink-0">
-                                  <!-- Heroicon name: solid/x-circle -->
-                                  <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                                  </svg>
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <!-- Heroicon name: solid/x-circle -->
+                                        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-red-800">
+                                            There were an errors with your submission
+                                        </h3>
+                                        <div class="mt-2 text-sm text-red-700">
+                                            <ul role="list" class="list-disc pl-5 space-y-1">
+                                                <li id="newTemplateSubmissionError">
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="ml-3">
-                                  <h3 class="text-sm font-medium text-red-800">
-                                    There were an errors with your submission
-                                  </h3>
-                                  <div class="mt-2 text-sm text-red-700">
-                                    <ul role="list" class="list-disc pl-5 space-y-1">
-                                      <li id="newTemplateSubmissionError">
-                                        
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
                             </div>
-                        
+
                             <!-- Project name -->
                             <div class="space-y-1 px-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                                 <div>
@@ -191,12 +191,18 @@
                     <label class="block text-sm font-medium text-gray-700">Description</label>
                     <textarea class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" name="Description"></textarea>
                 </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <button type="button" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm">
+                        Delete this task
+                    </button>
+                </div>
             </div>
         </div>
     </li>
 </template>
 
-<script>
+<script>            
     document.addEventListener('DOMContentLoaded', function (event) {
         $("#newTemplateForm").submit(function(e) {
             e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -211,9 +217,10 @@
                        success: function(data)
                        {
                            if (!data.hasOwnProperty('message')) {
+                               number = no;
                                // Reload part of page that shows templates
                                let container = $("#projectTemplateContainer");
-                               container.html(data.view);
+                               container.html(data);
            
                                // Hide side overlay after page has been reloaded
                                Alpine.store('page').showNewTemplate(false);
@@ -221,6 +228,7 @@
                                // Reset the form, so the overlay can be used again
                                $('#newTemplateForm').trigger("reset");
                                $('#newTemplateSubmissionErrorBox').hide();
+                               removeAllTasks(number);
                            }
                            else {
                                $('#newTemplateSubmissionErrorBox').show();

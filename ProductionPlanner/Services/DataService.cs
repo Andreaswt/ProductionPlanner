@@ -66,6 +66,7 @@ namespace ProductionPlanner.Services
         public void DeleteProjectTemplate(int id)
         {
             ProjectTemplate p = _db.ProjectTemplates.Include(p => p.ProjectTasks).First(x => x.Id == id);
+            _db.ProjectTasks.RemoveRange(p.ProjectTasks);
             _db.ProjectTemplates.Remove(p);
             _db.SaveChanges();
         }
@@ -76,21 +77,18 @@ namespace ProductionPlanner.Services
             if (_db.Projects.Any(x => x.Name == projectTemplate.Name))
                 return false;
             
-            Project project = new();
-            
-            // TODO: map projecttemplate to project, and store in DB
-            
-            // Otherwise create the projectTemplate
-            foreach (var projectTask in projectTemplate.ProjectTasks)
+            // Map relevant properties
+            Project project = new Project
             {
-                projectTask.ProjectName = projectTemplate.Name;
-            }
-
-            projectTemplate.Owner = "Admin"; // TODO: get logged in user name
-
-            _db.ProjectTemplates.Add(projectTemplate);
+                Name = projectTemplate.Name,
+                Description = projectTemplate.Description,
+                Owner = projectTemplate.Description,
+                ProjectTasks = projectTemplate.ProjectTasks
+            };
+            
+            _db.Projects.Add(project);
             _db.SaveChanges();
-
+            
             return true;
         }
     }
