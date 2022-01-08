@@ -1,6 +1,6 @@
 @model ProductionPlanner.Models.ProjectTemplate;
 
-<div x-cloak x-on:keyup.escape="$store.page.showNewTemplate(false)" x-show="$store.page.newTemplate == true" class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+<div x-data x-cloak x-on:keyup.escape="$store.page.showNewTemplate(false)" x-show="$store.page.newTemplate == true" class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <div class="absolute inset-0 overflow-hidden">
         <!-- Background overlay, show/hide based on slide-over state. -->
         <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -125,17 +125,12 @@
                                                         </div>
 
                                                         <div class="col-span-6 sm:col-span-3">
-                                                            <label class="block text-sm font-medium text-gray-700">Priority</label>
-                                                            @* Value attribute can't be set with tag helper *@
-                                                            <input type="number" value="0" asp-for="ProjectTasks[0].Priority" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                                                            @Html.ValidationMessageFor(x => x.ProjectTasks[0].Priority)
-                                                        </div>
-
-                                                        <div class="col-span-6 sm:col-span-3">
-                                                            <label class="block text-sm font-medium text-gray-700">Duration in hours</label>
+                                                            <label class="block text-sm font-medium text-gray-700">Duration</label>
                                                             @Html.EditorFor(x => x.ProjectTasks[0].Duration, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
                                                             @Html.ValidationMessageFor(x => x.ProjectTasks[0].Duration)
+                                                            @Html.HiddenFor(x => x.ProjectTasks[0].Priority)
                                                         </div>
+                                                        
 
                                                         <div class="col-span-6 sm:col-span-4">
                                                             <label class="block text-sm font-medium text-gray-700">Description</label>
@@ -178,13 +173,9 @@
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
-                    <label class="block text-sm font-medium text-gray-700">Priority</label>
-                    <input required type="number" value="0" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md valid" data-val="true" data-val-range="Please enter valid priority" data-val-range-max="2147483647" data-val-range-min="0" data-val-required="The Priority field is required." name="Priority" aria-invalid="false">
-                </div>
-
-                <div class="col-span-6 sm:col-span-3">
                     <label class="block text-sm font-medium text-gray-700">Duration in hours</label>
                     <input required class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-box single-line valid" data-val="true" data-val-range="Please enter valid duration" data-val-range-max="2147483647" data-val-range-min="0" data-val-required="The Duration field is required." name="Duration" type="number" value="" aria-invalid="false">
+                    <input data-val="true" data-val-required="The Priority field is required." name="Priority" type="hidden" value="">
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
@@ -216,6 +207,7 @@
                        data: form.serialize(), // serializes the form's elements.
                        success: function(data)
                        {
+                           console.log(data);
                            if (!data.hasOwnProperty('message')) {
                                number = no;
                                // Reload part of page that shows templates

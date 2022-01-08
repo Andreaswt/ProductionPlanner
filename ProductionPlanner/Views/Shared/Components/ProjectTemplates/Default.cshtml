@@ -271,9 +271,30 @@
             // Increment number, so every form is unique
             no++;
         }
-        
+
         function removeTask(id) {
-            $('#task_row_'+id).remove();
+            setTimeout(function() {
+                $('#task_row_'+id).remove();
+            }, 1);
+            
+            // Change input names
+            for(let i = id; i < no; i++) {
+                var newNo = i-1;
+                document.getElementById("task_row_"+i).querySelector('input[name="ProjectTasks[' + i + '].Priority"]').value = newNo;
+                document.getElementById("task_row_"+i).querySelector('input[name="ProjectTasks[' + i + '].Priority"]').setAttribute("name", "ProjectTasks[" + newNo + "].Priority");
+                document.getElementById("task_row_"+i).querySelector('input[name="ProjectTasks[' + i + '].Name"]').setAttribute("name", "ProjectTasks[" + newNo + "].Name");
+                document.getElementById("task_row_"+i).querySelector('input[name="ProjectTasks[' + i + '].Duration"]').setAttribute("name", "ProjectTasks[" + newNo + "].Duration");
+                document.getElementById("task_row_"+i).querySelector('textarea[name="ProjectTasks[' + i + '].Description"]').setAttribute("name", "ProjectTasks[" + newNo + "].Description");
+                document.getElementById("task_row_"+i).querySelector('button').setAttribute("onclick", "removeTask(" + newNo + ")");
+            }
+            
+            // Change row names
+            for(let i = id+1; i < no; i++) {
+                var newNo = i-1;
+                document.getElementById("task_row_"+i).querySelector('button').setAttribute("onclick", "removeTask(" + newNo + ")");
+                document.getElementById("task_row_"+i).id = "task_row_" + newNo;
+            }
+            no -= 1;
         }
         
         function removeAllTasks(number) {
