@@ -267,6 +267,8 @@ This example requires updating your template:
             @* Fetched project from template will be injected here *@
         </div>
         
+        @await Component.InvokeAsync("NewProject")
+        
     </div>
 </div>
 </div>
@@ -294,6 +296,7 @@ This example requires updating your template:
                 newTemplate: false,
                 editTemplate: false,
                 newProjectFromTemplate: false,
+                newProject: false,
      
                 showProject(id) {
                     this.currentProject = id
@@ -307,7 +310,9 @@ This example requires updating your template:
                 showEditTemplate(state) {
                     this.editTemplate = state
                 },
-                
+                showNewProject(state) {
+                    this.newProject = state
+                },
                 showNewProjectFromTemplate(state) {
                     this.newProjectFromTemplate = state
                 }

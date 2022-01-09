@@ -11,5 +11,6 @@ namespace ProductionPlanner.Interfaces
         public void EditProjectTemplate(ProjectTemplate projectTemplate);
         public void DeleteProjectTemplate(int id);
         public bool CreateProjectFromTemplate(ProjectTemplate projectTemplate);
+        public bool CreateProjectFromScratch(ProjectTemplate projectTemplate);
     }
 }

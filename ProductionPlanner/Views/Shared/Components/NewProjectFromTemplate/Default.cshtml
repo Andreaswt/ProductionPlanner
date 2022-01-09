@@ -120,16 +120,10 @@
                                                                     </div>
 
                                                                     <div class="col-span-6 sm:col-span-3">
-                                                                        <label class="block text-sm font-medium text-gray-700">Priority</label>
-                                                                        @* Value attribute can't be set with tag helper *@
-                                                                        <input type="number" asp-for="ProjectTasks[i].Priority" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
-                                                                        @Html.ValidationMessageFor(x => x.ProjectTasks[i].Priority)
-                                                                    </div>
-
-                                                                    <div class="col-span-6 sm:col-span-3">
                                                                         <label class="block text-sm font-medium text-gray-700">Duration in hours</label>
                                                                         @Html.EditorFor(x => x.ProjectTasks[i].Duration, new {htmlAttributes = new {@class = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"}})
                                                                         @Html.ValidationMessageFor(x => x.ProjectTasks[i].Duration)
+                                                                        @Html.HiddenFor(x => x.ProjectTasks[i].Priority)
                                                                     </div>
 
                                                                     <div class="col-span-6 sm:col-span-4">

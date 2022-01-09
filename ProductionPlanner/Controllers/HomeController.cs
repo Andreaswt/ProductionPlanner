@@ -104,6 +104,21 @@ namespace ProductionPlanner.Controllers
             
             return Json( new {Message = "A project already exist with this name." });
         }
+        
+        [HttpPost]
+        public IActionResult CreateProjectFromScratch(ProjectTemplate projectTemplate)
+        {
+            if (!ModelState.IsValid)
+                return new EmptyResult();
+
+            var success = _dataService.CreateProjectFromScratch(projectTemplate);
+            if (success)
+            {
+                return ViewComponent("ProjectTemplates");
+            }
+            
+            return Json( new {Message = "A project already exist with this name." });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

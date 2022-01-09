@@ -1,9 +1,9 @@
--Check that if you edit a template, where you have deleted a task, the task will actually be deleted in the DB.
--Add the ability to delete a task when editing a project template, and creating a new project as well.
-
 -New project
 +Create new project without template. Use newprojecttemplate as boilerplate.
-+Create new project from template. Use editprojecttemplate as boilerplate.
+// TODO: Get the highest priority project, and make the new project +1 priority.
+
+-Add the ability to delete a task when editing a project template, and creating a new project as well.
+
 
 Later:
 -Project templates: show users which options are selected (Alpine/tailwind)

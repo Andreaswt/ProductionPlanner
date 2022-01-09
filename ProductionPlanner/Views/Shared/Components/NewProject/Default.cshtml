@@ -1,6 +1,6 @@
 @model ProductionPlanner.Models.ProjectTemplate;
 
-<div x-data x-cloak x-on:keyup.escape="$store.page.showNewTemplate(false)" x-show="$store.page.newTemplate == true" class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+<div x-data x-cloak x-on:keyup.escape="$store.page.showNewProject(false)" x-show="$store.page.newProject == true" class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <div class="absolute inset-0 overflow-hidden">
         <!-- Background overlay, show/hide based on slide-over state. -->
         <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -8,8 +8,8 @@
 
             <div
                 x-cloak
-                x-on:click.outside="$store.page.showNewTemplate(false)"
-                x-show="$store.page.newTemplate == true"
+                x-on:click.outside="$store.page.showNewProject(false)"
+                x-show="$store.page.newProject == true"
                 x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
                 x-transition:enter-start="translate-x-full"
                 x-transition:enter-end="translate-x-0"
@@ -18,21 +18,21 @@
                 x-transition:leave-end="translate-x-full"
                 class="w-screen max-w-2xl">
 
-                <form id="newTemplateForm" asp-controller="Home" asp-action="NewProjectTemplate" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
+                <form id="newProjectForm" asp-controller="Home" asp-action="CreateProjectFromScratch" class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                     <div class="flex-1 overflow-y-auto">
                         <!-- Header -->
                         <div class="px-4 py-6 bg-gray-50 sm:px-6">
                             <div class="flex items-start justify-between space-x-3">
                                 <div class="space-y-1">
                                     <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
-                                        New project template
+                                        New project
                                     </h2>
                                     <p class="text-sm text-gray-500">
-                                        Get started by filling in the information below to create your new project template.
+                                        Get started by filling in the information below to create your new project.
                                     </p>
                                 </div>
                                 <div class="h-7 flex items-center">
-                                    <button x-on:click="$store.page.showNewTemplate(false)" type="button" class="text-gray-400 hover:text-gray-500">
+                                    <button x-on:click="$store.page.showNewProject(false)" type="button" class="text-gray-400 hover:text-gray-500">
                                         <span class="sr-only">Close panel</span>
                                         <!-- Heroicon name: outline/x -->
                                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -47,7 +47,7 @@
                         <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-gray-200">
 
                             <!-- This example requires Tailwind CSS v2.0+ -->
-                            <div id="newTemplateSubmissionErrorBox" class="bg-red-50 p-4 hidden">
+                            <div id="newProjectSubmissionErrorBox" class="bg-red-50 p-4 hidden">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
                                         <!-- Heroicon name: solid/x-circle -->
@@ -61,7 +61,7 @@
                                         </h3>
                                         <div class="mt-2 text-sm text-red-700">
                                             <ul role="list" class="list-disc pl-5 space-y-1">
-                                                <li id="newTemplateSubmissionError">
+                                                <li id="newProjectSubmissionError">
 
                                                 </li>
                                             </ul>
@@ -105,17 +105,17 @@
                                 </div>
                                 <div class="col-span-3">
                                     <div class="flex flex-col space-x-2">
-                                        <button id="add_new_task" onclick="addNewTask()" type="button" class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-3 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        <button onclick="addNewTaskNewProject()" type="button" class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-3 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                             </svg>
                                             <span class="mt-2 block text-sm font-medium text-gray-900">
-                                                Add new task to template
+                                                Add new task to project
                                             </span>
                                         </button>
 
-                                        <ul id="add_new_task_list" role="list" class="divide-y divide-gray-200">
-                                            <li id="task_row" class="py-4">
+                                        <ul id="task_list_new_project" role="list" class="divide-y divide-gray-200">
+                                            <li id="task_row_new_project" class="py-4">
                                                 <div class="bg-white">
                                                     <div class="grid grid-cols-6 gap-6">
                                                         <div class="col-span-6 sm:col-span-3">
@@ -149,7 +149,7 @@
                     <!-- Action buttons -->
                     <div class="flex-shrink-0 px-4 border-t border-gray-200 py-5 sm:px-6">
                         <div class="space-x-3 flex justify-end">
-                            <button x-on:click="$store.page.showNewTemplate(false)" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <button x-on:click="$store.page.showNewProject(false)" type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Cancel
                             </button>
                             <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -163,8 +163,8 @@
     </div>
 </div>
 
-<template id="task_row_template">
-    <li id="task_row_" class="py-4">
+<template id="task_row_new_project_template">
+    <li id="task_row_new_project_" class="py-4">
         <div class="bg-white">
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
@@ -195,7 +195,7 @@
 
 <script>            
     document.addEventListener('DOMContentLoaded', function (event) {
-        $("#newTemplateForm").submit(function(e) {
+        $("#newProjectForm").submit(function(e) {
             e.preventDefault(); // avoid to execute the actual submit of the form.
         
             let form = $(this);
@@ -208,26 +208,79 @@
                        success: function(data)
                        {
                            if (!data.hasOwnProperty('message')) {
-                               number = no;
-                               // Reload part of page that shows templates
+                               // Reload part of page that shows projects
                                let container = $("#projectTemplateContainer");
                                container.html(data);
            
                                // Hide side overlay after page has been reloaded
-                               Alpine.store('page').showNewTemplate(false);
+                               Alpine.store('page').showNewProject(false);
            
                                // Reset the form, so the overlay can be used again
-                               $('#newTemplateForm').trigger("reset");
-                               $('#newTemplateSubmissionErrorBox').hide();
-                               removeAllTasks(number);
+                               $('#newProjectForm').trigger("reset");
+                               $('#newProjectSubmissionErrorBox').hide();
+                               removeAllTasksNewProject(newProjectNo);
                            }
                            else {
-                               $('#newTemplateSubmissionErrorBox').show();
-                               $('#newTemplateSubmissionError').text(data.message);
+                               $('#newProjectSubmissionErrorBox').show();
+                               $('#newProjectSubmissionError').text(data.message);
                            }
                        },
                      });
             }
         });
     });
+    
+    var newProjectNo = 1;
+    function addNewTaskNewProject() {
+        let template = document.getElementById("task_row_new_project_template");
+        let listItem = template.content.cloneNode(true);
+        
+        // Add html to page
+        listItem.children[0].id = "task_row_new_project_"+newProjectNo;
+        document.getElementById('task_list_new_project').appendChild(listItem);
+        
+        // Set html attributes of the new list item
+        document.getElementById("task_row_new_project_"+newProjectNo).querySelector('input[name="Name"]').setAttribute("name", "ProjectTasks[" + newProjectNo + "].Name");
+        document.getElementById("task_row_new_project_"+newProjectNo).querySelector('input[name="Priority"]').value = newProjectNo;
+        document.getElementById("task_row_new_project_"+newProjectNo).querySelector('input[name="Priority"]').setAttribute("name", "ProjectTasks[" + newProjectNo + "].Priority");
+        document.getElementById("task_row_new_project_"+newProjectNo).querySelector('input[name="Duration"]').setAttribute("name", "ProjectTasks[" + newProjectNo + "].Duration");
+        document.getElementById("task_row_new_project_"+newProjectNo).querySelector('textarea[name="Description"]').setAttribute("name", "ProjectTasks[" + newProjectNo + "].Description");
+        document.getElementById("task_row_new_project_"+newProjectNo).querySelector('button').setAttribute("onclick", "removeTaskNewProject(" + newProjectNo + ")");
+        
+        // Increment number, so every form is unique
+        newProjectNo++;
+    }
+    
+    function removeTaskNewProject(id) {
+        setTimeout(function() {
+            $('#task_row_new_project_'+id).remove();
+        }, 1);
+        
+        // Change input names
+        for(let i = id; i < newProjectNo; i++) {
+            let newNo = i-1;
+            document.getElementById("task_row_new_project_"+i).querySelector('input[name="ProjectTasks[' + i + '].Priority"]').value = newNo;
+            document.getElementById("task_row_new_project_"+i).querySelector('input[name="ProjectTasks[' + i + '].Priority"]').setAttribute("name", "ProjectTasks[" + newNo + "].Priority");
+            document.getElementById("task_row_new_project_"+i).querySelector('input[name="ProjectTasks[' + i + '].Name"]').setAttribute("name", "ProjectTasks[" + newNo + "].Name");
+            document.getElementById("task_row_new_project_"+i).querySelector('input[name="ProjectTasks[' + i + '].Duration"]').setAttribute("name", "ProjectTasks[" + newNo + "].Duration");
+            document.getElementById("task_row_new_project_"+i).querySelector('textarea[name="ProjectTasks[' + i + '].Description"]').setAttribute("name", "ProjectTasks[" + newNo + "].Description");
+            document.getElementById("task_row_new_project_"+i).querySelector('button').setAttribute("onclick", "removeTaskNewProject(" + newNo + ")");
+        }
+        
+        // Change row names
+        for(let i = id+1; i < newProjectNo; i++) {
+            let newNo = i-1;
+            document.getElementById("task_row_new_project_"+i).querySelector('button').setAttribute("onclick", "removeTaskNewProject(" + newNo + ")");
+            document.getElementById("task_row_new_project_"+i).id = "task_row_new_project_" + newNo;
+        }
+        newProjectNo -= 1;
+    }
+    
+    function removeAllTasksNewProject(number) {
+        for(let i = 1; i < number; i++) {
+          removeTaskNewProject(i);
+        }
+        
+        newProjectNo = 1;
+    }
 </script>

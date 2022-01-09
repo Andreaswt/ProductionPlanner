@@ -52,7 +52,18 @@ namespace ProductionPlanner.Services
         public void EditProjectTemplate(ProjectTemplate projectTemplate)
         {
             // Get existing
-            var existing = _db.ProjectTemplates.First(x => x.Name == projectTemplate.Name);
+            var existing = _db.ProjectTemplates.Include(p => p.ProjectTasks).First(x => x.Name == projectTemplate.Name);
+            
+            // Remove existing project tasks, so they don't clutter DB
+            _db.ProjectTasks.RemoveRange(existing.ProjectTasks);
+            
+            // Update project task name for each project task
+            foreach (var projectTask in projectTemplate.ProjectTasks)
+            {
+                projectTask.ProjectName = projectTemplate.Name;
+            }
+
+            projectTemplate.Owner = "Admin"; // TODO: get logged in user name
 
             // Update inputted changes from form
             existing.Description = projectTemplate.Description;
@@ -78,18 +89,53 @@ namespace ProductionPlanner.Services
                 return false;
             
             // Map relevant properties
-            Project project = new Project
-            {
-                Name = projectTemplate.Name,
-                Description = projectTemplate.Description,
-                Owner = projectTemplate.Description,
-                ProjectTasks = projectTemplate.ProjectTasks
-            };
+            Project project = templateToProjectMapper(projectTemplate);
+            project.Owner = "Admin";
             
             _db.Projects.Add(project);
             _db.SaveChanges();
             
             return true;
+        }
+        
+        public bool CreateProjectFromScratch(ProjectTemplate projectTemplate)
+        {
+            // If project with name already exists, return false
+            if (_db.Projects.Any(x => x.Name == projectTemplate.Name))
+                return false;
+            
+            // Map relevant properties
+            Project project = templateToProjectMapper(projectTemplate);
+
+            project.Owner = "Admin";
+            
+            // TODO: Get the highest priority project, and make the new project +1 priority.
+            //.Select(s => s.OrderByDescending(a => a.Version).First());
+            var record = _db.Projects.Select(p => p.Priority);
+
+            _db.Projects.Add(project);
+            _db.SaveChanges();
+            
+            return true;
+        }
+
+        private Project templateToProjectMapper(ProjectTemplate projectTemplate)
+        {
+            Project project = new Project
+            {
+                Name = projectTemplate.Name,
+                Description = projectTemplate.Description,
+                Owner = projectTemplate.Owner,
+                ProjectTasks = projectTemplate.ProjectTasks,
+            };
+            
+            // Set project name in project task
+            foreach (var projectTask in project.ProjectTasks)
+            {
+                projectTask.ProjectName = project.Name;
+            }
+
+            return project;
         }
     }
 }
