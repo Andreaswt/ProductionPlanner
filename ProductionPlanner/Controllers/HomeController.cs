@@ -91,27 +91,12 @@ namespace ProductionPlanner.Controllers
         }
         
         [HttpPost]
-        public IActionResult CreateProjectFromTemplate(ProjectTemplate projectTemplate)
+        public IActionResult CreateProject(ProjectTemplate projectTemplate)
         {
             if (!ModelState.IsValid)
                 return new EmptyResult();
 
-            var success = _dataService.CreateProjectFromTemplate(projectTemplate);
-            if (success)
-            {
-                return ViewComponent("ProjectTemplates");
-            }
-            
-            return Json( new {Message = "A project already exist with this name." });
-        }
-        
-        [HttpPost]
-        public IActionResult CreateProjectFromScratch(ProjectTemplate projectTemplate)
-        {
-            if (!ModelState.IsValid)
-                return new EmptyResult();
-
-            var success = _dataService.CreateProjectFromScratch(projectTemplate);
+            var success = _dataService.CreateProject(projectTemplate);
             if (success)
             {
                 return ViewComponent("ProjectTemplates");

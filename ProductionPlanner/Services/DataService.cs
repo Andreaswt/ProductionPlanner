@@ -81,45 +81,25 @@ namespace ProductionPlanner.Services
             _db.ProjectTemplates.Remove(p);
             _db.SaveChanges();
         }
-        
-        public bool CreateProjectFromTemplate(ProjectTemplate projectTemplate)
+
+        public bool CreateProject(ProjectTemplate projectTemplate)
         {
             // If project with name already exists, return false
             if (_db.Projects.Any(x => x.Name == projectTemplate.Name))
                 return false;
             
             // Map relevant properties
-            Project project = templateToProjectMapper(projectTemplate);
+            Project project = TemplateToProjectMapper(projectTemplate);
             project.Owner = "Admin";
+            project.Priority = GetNextProjectPriority();
             
             _db.Projects.Add(project);
             _db.SaveChanges();
             
             return true;
         }
-        
-        public bool CreateProjectFromScratch(ProjectTemplate projectTemplate)
-        {
-            // If project with name already exists, return false
-            if (_db.Projects.Any(x => x.Name == projectTemplate.Name))
-                return false;
-            
-            // Map relevant properties
-            Project project = templateToProjectMapper(projectTemplate);
 
-            project.Owner = "Admin";
-            
-            // TODO: Get the highest priority project, and make the new project +1 priority.
-            //.Select(s => s.OrderByDescending(a => a.Version).First());
-            var record = _db.Projects.Select(p => p.Priority);
-
-            _db.Projects.Add(project);
-            _db.SaveChanges();
-            
-            return true;
-        }
-
-        private Project templateToProjectMapper(ProjectTemplate projectTemplate)
+        private Project TemplateToProjectMapper(ProjectTemplate projectTemplate)
         {
             Project project = new Project
             {
@@ -136,6 +116,15 @@ namespace ProductionPlanner.Services
             }
 
             return project;
+        }
+
+        private int? GetNextProjectPriority()
+        {
+            // Get the highest priority project, and make the new project +1 priority.
+            var lowestPriorityItem = _db.Projects.OrderByDescending(x => x.Priority).FirstOrDefault();
+            var topPriority  = lowestPriorityItem == null ? 0 : lowestPriorityItem.Priority;
+
+            return topPriority + 1;
         }
     }
 }

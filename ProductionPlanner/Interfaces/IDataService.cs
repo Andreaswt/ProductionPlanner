@@ -10,7 +10,6 @@ namespace ProductionPlanner.Interfaces
         public bool SaveProjectTemplate(ProjectTemplate projectTemplate);
         public void EditProjectTemplate(ProjectTemplate projectTemplate);
         public void DeleteProjectTemplate(int id);
-        public bool CreateProjectFromTemplate(ProjectTemplate projectTemplate);
-        public bool CreateProjectFromScratch(ProjectTemplate projectTemplate);
+        public bool CreateProject(ProjectTemplate projectTemplate);
     }
 }
