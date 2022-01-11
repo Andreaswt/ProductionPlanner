@@ -26,6 +26,7 @@
     <ItemGroup>
       <AdditionalFiles Include="Views\Shared\Components\NewProjectFromTemplate\Default.cshtml" />
       <AdditionalFiles Include="Views\Shared\Components\NewProject\Default.cshtml" />
+      <AdditionalFiles Include="Views\Shared\Components\ProjectList\Default.cshtml" />
     </ItemGroup>
     
 </Project>

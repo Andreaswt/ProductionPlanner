@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductionPlanner.Data;
 
@@ -10,9 +11,10 @@ using ProductionPlanner.Data;
 namespace ProductionPlanner.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220111160750_projectCreated")]
+    partial class projectCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
@@ -263,9 +265,6 @@ namespace ProductionPlanner.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("Priority")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Progress")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

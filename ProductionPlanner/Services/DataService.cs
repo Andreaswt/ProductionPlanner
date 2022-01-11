@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -92,6 +93,7 @@ namespace ProductionPlanner.Services
             Project project = TemplateToProjectMapper(projectTemplate);
             project.Owner = "Admin";
             project.Priority = GetNextProjectPriority();
+            project.Created = DateTime.Now;
             
             _db.Projects.Add(project);
             _db.SaveChanges();

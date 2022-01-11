@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using ProductionPlanner.Enums;
 
 namespace ProductionPlanner.Models
 {
@@ -15,6 +16,8 @@ namespace ProductionPlanner.Models
         public string? Owner { get; set; }
         public int? Priority { get; set; }
         public List<ProjectTask>? ProjectTasks { get; set; }
+        public DateTime? Created { get; set; }
+        public ProjectProgress Progress { get; set; } = ProjectProgress.Todo;
         public int TotalHours
         {
             get
