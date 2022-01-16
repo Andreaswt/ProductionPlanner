@@ -1,10 +1,6 @@
--New project
-+Create new project without template. Use newprojecttemplate as boilerplate.
-// TODO: Get the highest priority project, and make the new project +1 priority.
-
--Add the ability to delete a task when editing a project template, and creating a new project as well.
-
+-Projectdetails page: Sort projecttasks by priority, after changing projecttask progress.
 
 Later:
 -Project templates: show users which options are selected (Alpine/tailwind)
 -Get logged in user name, when created new project template
+-Add the ability to delete a task when editing a project template, and creating a new project as well.

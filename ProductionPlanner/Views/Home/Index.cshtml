@@ -269,7 +269,7 @@ This example requires updating your template:
             <partial name="../PlanViews/Columns.cshtml"/>
         </main>
         
-        <main x-cloak x-show="$store.page.current == 'projectListView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+        <main id="projectListContainer" x-cloak x-show="$store.page.current == 'projectListView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
             @await Component.InvokeAsync("ProjectList")
         </main>
 
@@ -288,6 +288,10 @@ This example requires updating your template:
         </div>
         
         @await Component.InvokeAsync("NewProject")
+        
+        <div id="projectDetailsContainer">
+            @* Fetched project details will be injected here *@
+        </div>
         
     </div>
 </div>
@@ -312,8 +316,7 @@ This example requires updating your template:
                 showProjectTemplate() {
                     this.current = "projectTemplate"
                 },
-                
-                
+                                
                 /* ---Template page--- */
                 currentProject: "",
                 currentTask: "",
@@ -339,6 +342,13 @@ This example requires updating your template:
                 },
                 showNewProjectFromTemplate(state) {
                     this.newProjectFromTemplate = state
+                },
+                
+                /* ---Project list view page--- */
+                projectDetails: false,
+                
+                showProjectDetails(state) {
+                    this.projectDetails = state
                 },
             })
         })

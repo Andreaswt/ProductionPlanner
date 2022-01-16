@@ -1,49 +1,62 @@
-@model List<ProductionPlanner.Models.Project>;
+@using ProductionPlanner.Enums
+@model ProductionPlanner.ViewModels.ProjectListViewModel;
 
 <!-- Pinned projects -->
 <div class="px-4 mt-6 sm:px-6 lg:px-8">
     <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">Pinned Projects</h2>
     <ul role="list" class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 mt-3">
         <li class="relative col-span-1 flex shadow-sm rounded-md">
-            <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md">
-                GA
+            <div class="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-l-md">
+                All
             </div>
             <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
                 <div class="flex-1 px-4 py-2 text-sm truncate">
-                    <a href="#" class="text-gray-900 font-medium hover:text-gray-600">
-                        GraphQL API
-                    </a>
-                    <p class="text-gray-500">12 Members</p>
-                </div>
-                <div class="flex-shrink-0 pr-2">
-                    <button type="button" class="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" id="pinned-project-options-menu-0-button" aria-expanded="false" aria-haspopup="true">
-                        <span class="sr-only">Open options</span>
-                        <!-- Heroicon name: solid/dots-vertical -->
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                        </svg>
+                    <button onclick="loadPage(0, true, true, true)" class="text-gray-900 font-medium hover:text-gray-600">
+                        All projects
                     </button>
+                    <p class="text-gray-500">@Model.TotalProjects projects</p>
+                </div>
+            </div>
+        </li>
 
-                    <!--
-                    Dropdown menu, show/hide based on menu state.
+        <li class="relative col-span-1 flex shadow-sm rounded-md">
+            <div class="flex-shrink-0 flex items-center justify-center w-16 bg-green-100 text-green-800 text-sm font-medium rounded-l-md">
+                Todo
+            </div>
+            <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+                <div class="flex-1 px-4 py-2 text-sm truncate">
+                    <button onclick="loadPage(0, true, false, false)" class="text-gray-900 font-medium hover:text-gray-600">
+                        Projects marked Todo
+                    </button>
+                    <p class="text-gray-500">@Model.TodoProjects projects</p>
+                </div>
+            </div>
+        </li>
 
-                    Entering: "transition ease-out duration-100"
-                    From: "transform opacity-0 scale-95"
-                    To: "transform opacity-100 scale-100"
-                    Leaving: "transition ease-in duration-75"
-                    From: "transform opacity-100 scale-100"
-                    To: "transform opacity-0 scale-95"
-                    -->
-                    @*<div class="z-10 mx-3 origin-top-right absolute right-10 top-3 w-48 mt-1 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="pinned-project-options-menu-0-button" tabindex="-1">
-                  <div class="py-1" role="none">
-                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="pinned-project-options-menu-0-item-0">View</a>
-                  </div>
-                  <div class="py-1" role="none">
-                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="pinned-project-options-menu-0-item-1">Removed from pinned</a>
-                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="pinned-project-options-menu-0-item-2">Share</a>
-                  </div>
-                </div>*@
+        <li class="relative col-span-1 flex shadow-sm rounded-md">
+            <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-100 text-pink-800 text-sm font-medium rounded-l-md">
+                Started
+            </div>
+            <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+                <div class="flex-1 px-4 py-2 text-sm truncate">
+                    <button onclick="loadPage(0, false, true, false)" class="text-gray-900 font-medium hover:text-gray-600">
+                        Projects marked Started
+                    </button>
+                    <p class="text-gray-500">@Model.InProgressProjects projects</p>
+                </div>
+            </div>
+        </li>
+
+        <li class="relative col-span-1 flex shadow-sm rounded-md">
+            <div class="flex-shrink-0 flex items-center justify-center w-16 bg-blue-100 text-blue-800 text-sm font-medium rounded-l-md">
+                Finished
+            </div>
+            <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+                <div class="flex-1 px-4 py-2 text-sm truncate">
+                    <button onclick="loadPage(0, false, false, true)" class="text-gray-900 font-medium hover:text-gray-600">
+                        Projects marked Finished
+                    </button>
+                    <p class="text-gray-500">@Model.FinishedProjects projects</p>
                 </div>
             </div>
         </li>
@@ -54,9 +67,9 @@
 
 
 @{
-    if (!Model.Any())
+    if (!Model.Projects.Any())
     {
-        <div class="text-center">
+        <div class="text-center pt-5">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
             </svg>
@@ -65,7 +78,7 @@
                 Get started by creating a new project.
             </p>
             <div class="mt-6">
-                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button x-on:click="$store.page.showNewProject(true)" type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <!-- Heroicon name: solid/plus -->
                     <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
@@ -84,12 +97,29 @@
             </div>
             <ul role="list" class="mt-3 border-t border-gray-200 divide-y divide-gray-100">
                 @{
-                    foreach (var project in Model)
+                    foreach (var project in Model.Projects)
                     {
                         <li>
-                            <a href="#" class="group flex items-center justify-between px-4 py-4 hover:bg-gray-50 sm:px-6">
+                            <a onclick="projectDetails(@project.Id)" href="javascript:void(0);" class="group flex items-center justify-between px-4 py-4 hover:bg-gray-50 sm:px-6">
                                 <span class="flex items-center truncate space-x-3">
-                                    <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-pink-600" aria-hidden="true"></span>
+                                    @{
+                                        if (project.Progress == ProjectProgress.Todo)
+                                        {
+                                            <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-green-600" aria-hidden="true"></span>
+                                        }
+                                        else if (project.Progress == ProjectProgress.InProgress)
+                                        {
+                                            <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-pink-600" aria-hidden="true"></span>
+                                        }
+                                        else if (project.Progress == ProjectProgress.Finished)
+                                        {
+                                            <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-blue-600" aria-hidden="true"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-yellow-600" aria-hidden="true"></span>
+                                        }
+                                    }
                                     <span class="font-medium truncate text-sm leading-6">
                                         @project.Name
                                         <span class="truncate font-normal text-gray-500">@project.Description</span>
@@ -110,84 +140,231 @@
 
         <!-- Projects table (small breakpoint and up) -->
         <div class="hidden mt-8 sm:block">
-            <div class="align-middle inline-block min-w-full border-b border-gray-200">
-                <table class="min-w-full">
-                    <thead>
-                    <tr class="border-t border-gray-200">
-                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <span class="lg:pl-2">Project</span>
-                        </th>
-                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                        </th>
-                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Priority
-                        </th>
-                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Assigned
-                        </th>
-                        <th class="hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Created
-                        </th>
-                        <th class="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                    </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-100">
-                    @{
-                        foreach (var project in Model)
-                        {
-                            <tr>
-                                <td class="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">
-                                    <div class="flex items-center space-x-3 lg:pl-2">
-                                        <div class="flex-shrink-0 w-2.5 h-2.5 rounded-full bg-pink-600" aria-hidden="true"></div>
-                                        <a href="#" class="truncate hover:text-gray-600">
-                                            <span>
-                                                @project.Name
-                                                <span class="text-gray-500 font-normal">@project.Description</span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        @project.Progress
+        <div class="align-middle inline-block min-w-full border-b border-gray-200">
+        <table class="min-w-full">
+            <thead>
+            <tr class="border-t border-gray-200">
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span class="lg:pl-2">Project</span>
+                </th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                </th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Priority
+                </th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Assigned
+                </th>
+                <th class="hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Created
+                </th>
+                <th class="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+            @{
+                foreach (var project in Model.Projects)
+                {
+                    <tr>
+                        <td class="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">
+                            <div class="flex items-center space-x-3 lg:pl-2">
+                                @{
+                                    if (project.Progress == ProjectProgress.Todo)
+                                    {
+                                        <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-green-600" aria-hidden="true"></span>
+                                    }
+                                    else if (project.Progress == ProjectProgress.InProgress)
+                                    {
+                                        <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-pink-600" aria-hidden="true"></span>
+                                    }
+                                    else if (project.Progress == ProjectProgress.Finished)
+                                    {
+                                        <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-blue-600" aria-hidden="true"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-yellow-600" aria-hidden="true"></span>
+                                    }
+                                }
+                                <a onclick="projectDetails(@project.Id)" href="javascript:void(0);" class="truncate hover:text-gray-600">
+                                    <span>
+                                        @project.Name
+                                        <span class="text-gray-500 font-normal">@project.Description</span>
                                     </span>
-                                </td>
-                                <td class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                                    @project.Priority
-                                </td>
-                                <td class="px-6 py-3 text-sm text-gray-500 font-medium">
-                                    <div class="flex items-center space-x-2">
-                                        <div class="flex flex-shrink-0 -space-x-1">
-                                            <img class="max-w-none h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Dries Vincent">
-
-                                            <img class="max-w-none h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Lindsay Walton">
-
-                                            <img class="max-w-none h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Courtney Henry">
-
-                                            <img class="max-w-none h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Tom Cook">
-                                        </div>
-
-                                        <span class="flex-shrink-0 text-xs leading-5 font-medium">+8</span>
-                                    </div>
-                                </td>
-                                <td class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                                    @project.Created
-                                </td>
-                                <td class="px-6 py-3 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" class="text-indigo-600 hover:text-indigo-900">Details</a>
-                                </td>
-                            </tr>
+                                </a>
+                            </div>
+                        </td>
+                        <td class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
+                            <div class="w-36 flex items-center">
+                                @{
+                                    if (project.Progress == ProjectProgress.Todo)
+                                    {
+                                        <span class="bg-green-400 flex-shrink-0 inline-block h-2 w-2 rounded-full mr-4"></span>
+                                    }
+                                    else if (project.Progress == ProjectProgress.InProgress)
+                                    {
+                                        <span class="bg-pink-400 flex-shrink-0 inline-block h-2 w-2 rounded-full mr-4"></span>
+                                    }
+                                    else if (project.Progress == ProjectProgress.Finished)
+                                    {
+                                        <span class="bg-blue-400 flex-shrink-0 inline-block h-2 w-2 rounded-full mr-4"></span>
+                                    }
+                                }
+                                <select id="projectProgressSelect_@project.Id" onchange="updateProjectProgress(@project.Id)" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                    @{
+                                        if (project.Progress == ProjectProgress.Todo)
+                                        {
+                                            <option value="0" selected>Todo</option>
+                                            <option value="1">In Progress</option>
+                                            <option value="2">Finished</option>
+                                        }
+                                        else if (project.Progress == ProjectProgress.InProgress)
+                                        {
+                                            <option value="0">Todo</option>
+                                            <option value="1" selected>In Progress</option>
+                                            <option value="2">Finished</option>
+                                        }
+                                        else if (project.Progress == ProjectProgress.Finished)
+                                        {
+                                            <option value="0">Todo</option>
+                                            <option value="1">In Progress</option>
+                                            <option value="2" selected>Finished</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                        <td class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
+                            @project.Priority
+                        </td>
+                        <td class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
+                            @{
+                                if (project.Owner != "")
+                                    @Html.Raw(project.Owner)
+                                else
+                                    @Html.Raw("None");
+                            }
+                        </td>
+                        <td class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
+                            @project.Created
+                        </td>
+                        <td class="px-6 py-3 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="javascript:void(0);" onclick="projectDetails(@project.Id)" class="text-indigo-600 hover:text-indigo-900">Details</a>
+                        </td>
+                    </tr>
+                }
+            }
+            <!-- More projects... -->
+            </tbody>
+        </table>
+        <nav class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6" aria-label="Pagination">
+            <div class="hidden sm:block">
+                <p class="text-sm text-gray-700">
+                    Showing
+                    <span class="font-medium">@Model.From</span>
+                    to
+                    <span class="font-medium">@Model.To</span>
+                    of
+                    @{
+                        if (Model.ShowTodo && Model.ShowInProgress && Model.ShowFinished)
+                        {
+                            <span class="font-medium">@Model.TotalProjects</span>
+                        }
+                        else if (Model.ShowTodo)
+                        {
+                            <span class="font-medium">@Model.TodoProjects</span>
+                        }
+                        else if (Model.ShowInProgress)
+                        {
+                            <span class="font-medium">@Model.InProgressProjects</span>
+                        }
+                        else if (Model.ShowFinished)
+                        {
+                            <span class="font-medium">@Model.FinishedProjects</span>
                         }
                     }
-                    <!-- More projects... -->
-                    </tbody>
-                </table>
+                    results
+                </p>
             </div>
+            <div class="flex-1 flex justify-between sm:justify-end">
+                @{
+                    if (Model.Page != 0)
+                    {
+                        <button onclick="loadPage(@Model.Page-1, @Model.ShowTodo.ToString().ToLower(), @Model.ShowInProgress.ToString().ToLower(), @Model.ShowFinished.ToString().ToLower())" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </button>
+                    }
+                }
+                @{
+                    if (Model.Page != Model.TotalPages - 1)
+                    {
+                        <button onclick="loadPage(@Model.Page+1, @Model.ShowTodo.ToString().ToLower(), @Model.ShowInProgress.ToString().ToLower(), @Model.ShowFinished.ToString().ToLower())" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Next
+                        </button>
+                    }
+                }
+            </div>
+        </nav>
+        </div>
         </div>
     }
 }
 
 <script>
+    let showTodo = false;
+    let showInProgress = false;
+    let showFinished = false;
+    let currentPage = 0;
+    
+    function projectDetails(id) {
+        $.ajax({
+               type: "GET",
+               url: "Home/GetProjectDetails?projectId=" + id,
+               success: function(data)
+               {
+                    // Update the page with the fetched template
+                    var container = $("#projectDetailsContainer");
+                    container.html(data);
+                    
+                    // Show the edit menu, when the template has finished loaded
+                    setTimeout(function() {
+                        Alpine.store('page').showProjectDetails(true);
+                    }, 1);
+               }
+             });
+    }
+    
+    function loadPage(page, todo, inprogress, finished) {
+        showTodo = todo;
+        showInProgress = inprogress;
+        showFinished = finished;
+        currentPage = page;
         
+        $.ajax({
+               type: "GET",
+               url: "Home/GetProjectList?todo=" + todo + "&inprogress=" + inprogress + "&finished=" + finished + "&pageNo=" + page,
+               success: function(data)
+               {
+                    // Update the page with the fetched template
+                    var container = $("#projectListContainer");
+                    container.html(data);
+               }
+         });
+    }
+    
+    function updateProjectProgress(id) {
+        let selectValue = $('#projectProgressSelect_' + id + ' option').filter(":selected").val();
+        $.ajax({
+               type: "POST",
+               url: "Home/UpdateProjectProgress?projectId=" + id + "&projectProgress=" + selectValue + "&todo=" + showTodo + "&inprogress=" + showInProgress + "&finished=" + showFinished + "&pageNo=" + currentPage,
+               success: function(data)
+               {
+                    // Update the page with the fetched template
+                    var container = $("#projectListContainer");
+                    container.html(data);
+               }
+         });
+    }
+    
 </script>

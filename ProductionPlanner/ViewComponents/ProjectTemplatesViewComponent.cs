@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductionPlanner.Data;
+using ProductionPlanner.Enums;
 using ProductionPlanner.Models;
 using ProductionPlanner.ViewModels;
 
@@ -53,7 +54,6 @@ namespace ProductionPlanner.ViewComponents
                         Name = "Opg 1",
                         Description = "Opgave 1",
                         ProjectName = "Projekt 1",
-                        Progress = "Todo",
                         PersonAssigned = "Donald",
                     },
                     new ProjectTask
@@ -63,7 +63,6 @@ namespace ProductionPlanner.ViewComponents
                         Name = "Opg 2",
                         Description = "Opgave 2",
                         ProjectName = "Projekt 1",
-                        Progress = "Todo",
                         PersonAssigned = "Donald"
                     },
                     new ProjectTask
@@ -73,7 +72,6 @@ namespace ProductionPlanner.ViewComponents
                         Name = "Opg 3",
                         Description = "Opgave 3",
                         ProjectName = "Projekt 1",
-                        Progress = "Todo",
                         PersonAssigned = "Donald"
                     }
                 }
@@ -93,7 +91,6 @@ namespace ProductionPlanner.ViewComponents
                         Name = "Opg 4",
                         Description = "Opgave 4",
                         ProjectName = "Projekt 1",
-                        Progress = "Todo",
                         PersonAssigned = "Donald"
                     },
 
@@ -104,7 +101,6 @@ namespace ProductionPlanner.ViewComponents
                         Name = "Opg 5",
                         Description = "Opgave 5",
                         ProjectName = "Projekt 2",
-                        Progress = "Todo",
                         PersonAssigned = "Donald"
                     },
                     new ProjectTask
@@ -114,7 +110,6 @@ namespace ProductionPlanner.ViewComponents
                         Name = "Opg 6",
                         Description = "Opgave 6",
                         ProjectName = "Projekt 2",
-                        Progress = "Todo",
                         PersonAssigned = "Donald"
                     }
                 }

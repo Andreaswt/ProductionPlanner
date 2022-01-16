@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using ProductionPlanner.Data;
+using ProductionPlanner.Enums;
 using ProductionPlanner.Interfaces;
 using ProductionPlanner.Models;
 
@@ -99,6 +100,26 @@ namespace ProductionPlanner.Services
             _db.SaveChanges();
             
             return true;
+        }
+        
+        public void UpdateProjectProgress(int id, ProjectProgress projectProgress)
+        {
+            // If project with name already exists, return false
+            var project = _db.Projects.FirstOrDefault(p => p.Id == id);
+            project.Progress = projectProgress;
+                
+            _db.Projects.Update(project);
+            _db.SaveChanges();
+        }
+        
+        public void UpdateProjectTaskProgress(int id, ProjectTaskProgress projectProgress)
+        {
+            // If project with name already exists, return false
+            var projectTask = _db.ProjectTasks.FirstOrDefault(p => p.Id == id);
+            projectTask.Progress = projectProgress;
+                
+            _db.ProjectTasks.Update(projectTask);
+            _db.SaveChanges();
         }
 
         private Project TemplateToProjectMapper(ProjectTemplate projectTemplate)

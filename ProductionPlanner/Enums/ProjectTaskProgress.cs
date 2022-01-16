@@ -1,6 +1,6 @@
 namespace ProductionPlanner.Enums
 {
-    public enum ProjectProgress
+    public enum ProjectTaskProgress
     {
         Todo = 0,
         InProgress = 1,

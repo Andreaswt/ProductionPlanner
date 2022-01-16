@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ProductionPlanner.Enums;
 
 namespace ProductionPlanner.Models
 {
@@ -13,7 +14,7 @@ namespace ProductionPlanner.Models
         [Required(ErrorMessage = "Please enter a valid name.")]
         public string? Name { get; set; }
         public string? ProjectName { get; set; }
-        public string? Progress { get; set; }
+        public ProjectTaskProgress Progress { get; set; } = ProjectTaskProgress.Todo;
         
         [Required(ErrorMessage = "Please enter a valid description.")]
         [DataType(DataType.MultilineText)]

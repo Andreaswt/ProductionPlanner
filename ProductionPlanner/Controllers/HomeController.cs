@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using ProductionPlanner.Data;
+using ProductionPlanner.Enums;
 using ProductionPlanner.Interfaces;
 using ProductionPlanner.Models;
 using ProductionPlanner.Services;
@@ -99,10 +100,36 @@ namespace ProductionPlanner.Controllers
             var success = _dataService.CreateProject(projectTemplate);
             if (success)
             {
-                return ViewComponent("ProjectTemplates");
+                return ViewComponent("ProjectList");
             }
             
             return Json( new {Message = "A project already exist with this name." });
+        }
+        
+        [HttpGet]
+        public IActionResult GetProjectList(int pageNo, bool todo, bool inprogress, bool finished)
+        {
+            return ViewComponent("ProjectList", new {page = pageNo, showTodo = todo, showInProgress = inprogress, showFinished = finished });
+        }
+        
+        [HttpGet]
+        public IActionResult GetProjectDetails(int projectId)
+        {
+            return ViewComponent("ProjectDetails", new {id = projectId});
+        }
+        
+        [HttpPost]
+        public IActionResult UpdateProjectProgress(int projectId, int projectProgress, int pageNo = 0, bool todo = true, bool inprogress = true, bool finished = true)
+        {
+            _dataService.UpdateProjectProgress(projectId, (ProjectProgress) projectProgress);
+            return ViewComponent("ProjectList", new {page = pageNo, showTodo = todo, showInProgress = inprogress, showFinished = finished });
+        }
+        
+        [HttpPost]
+        public IActionResult UpdateProjectTaskProgress(int projectTaskId, int projectId, int projectTaskProgress)
+        {
+            _dataService.UpdateProjectTaskProgress(projectTaskId, (ProjectTaskProgress) projectTaskProgress);
+            return ViewComponent("ProjectDetails", new {id = projectId});
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

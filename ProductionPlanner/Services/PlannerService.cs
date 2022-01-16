@@ -156,7 +156,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 1",
                 Description = "Opgave 1",
                 ProjectName = "Projekt 1",
-                Progress = "Todo",
                 PersonAssigned = "Donald",
             };
             ProjectTask t1 = new ProjectTask
@@ -166,7 +165,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 2",
                 Description = "Opgave 2",
                 ProjectName = "Projekt 1",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t2 = new ProjectTask
@@ -176,7 +174,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 3",
                 Description = "Opgave 3",
                 ProjectName = "Projekt 1",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t3 = new ProjectTask
@@ -186,7 +183,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 4",
                 Description = "Opgave 4",
                 ProjectName = "Projekt 1",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
 
@@ -197,7 +193,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 5",
                 Description = "Opgave 5",
                 ProjectName = "Projekt 2",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t5 = new ProjectTask
@@ -207,7 +202,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 6",
                 Description = "Opgave 6",
                 ProjectName = "Projekt 2",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t6 = new ProjectTask
@@ -217,7 +211,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 7",
                 Description = "Opgave 7",
                 ProjectName = "Projekt 2",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t7 = new ProjectTask
@@ -227,7 +220,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 8",
                 Description = "Opgave 8",
                 ProjectName = "Projekt 2",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
 
@@ -238,7 +230,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 9",
                 Description = "Opgave 9",
                 ProjectName = "Projekt 3",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t9 = new ProjectTask
@@ -248,7 +239,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 10",
                 Description = "Opgave 10",
                 ProjectName = "Projekt 3",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t10 = new ProjectTask
@@ -258,7 +248,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 11",
                 Description = "Opgave 11",
                 ProjectName = "Projekt 3",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
             ProjectTask t11 = new ProjectTask
@@ -268,7 +257,6 @@ namespace ProductionPlanner.Services
                 Name = "Opg 12",
                 Description = "Opgave 12",
                 ProjectName = "Projekt 3",
-                Progress = "Todo",
                 PersonAssigned = "Donald"
             };
 

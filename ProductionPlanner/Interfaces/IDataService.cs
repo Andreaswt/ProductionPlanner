@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ProductionPlanner.Enums;
 using ProductionPlanner.Models;
 
 namespace ProductionPlanner.Interfaces
@@ -11,5 +12,7 @@ namespace ProductionPlanner.Interfaces
         public void EditProjectTemplate(ProjectTemplate projectTemplate);
         public void DeleteProjectTemplate(int id);
         public bool CreateProject(ProjectTemplate projectTemplate);
+        public void UpdateProjectProgress(int id, ProjectProgress projectProgress);
+        public void UpdateProjectTaskProgress(int id, ProjectTaskProgress projectProgress);
     }
 }
