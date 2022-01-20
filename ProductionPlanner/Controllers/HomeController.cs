@@ -131,6 +131,13 @@ namespace ProductionPlanner.Controllers
             _dataService.UpdateProjectTaskProgress(projectTaskId, (ProjectTaskProgress) projectTaskProgress);
             return ViewComponent("ProjectDetails", new {id = projectId});
         }
+        
+        [HttpPost]
+        public IActionResult UpdateProjectPriority(int projectId, int projectPriority, int pageNo = 0, bool todo = true, bool inprogress = true, bool finished = true)
+        {
+            _dataService.UpdateProjectPriority(projectId, projectPriority);
+            return ViewComponent("ProjectList", new {page = pageNo, showTodo = todo, showInProgress = inprogress, showFinished = finished });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

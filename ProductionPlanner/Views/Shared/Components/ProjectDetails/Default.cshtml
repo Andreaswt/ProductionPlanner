@@ -1,7 +1,6 @@
 @using ProductionPlanner.Enums
 @model ProductionPlanner.ViewModels.ProjectDetailsViewModel;
 
-<!-- This example requires Tailwind CSS v2.0+ -->
 <div x-cloak x-on:keyup.escape="$store.page.showProjectDetails(false)" x-show="$store.page.projectDetails == true" class="fixed inset-0 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <div class="absolute inset-0 overflow-hidden">
         <!-- Background overlay, show/hide based on slide-over state. -->
@@ -191,10 +190,9 @@
 </div>
 
 <script>
-    let projectDetailsProjectId = @Model.Project.Id;
+    var projectDetailsProjectId = @Model.Project.Id;
     function updateProjectTaskProgress(id) {
         let selectValue = $('#projectTaskProgressSelect_' + id + ' option').filter(":selected").val();
-        console.log(selectValue);
         $.ajax({
                type: "POST",
                url: "Home/UpdateProjectTaskProgress?projectTaskId=" + id + "&projectId=" + projectDetailsProjectId + "&projectTaskProgress=" + selectValue,

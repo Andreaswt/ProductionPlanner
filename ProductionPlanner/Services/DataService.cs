@@ -112,6 +112,33 @@ namespace ProductionPlanner.Services
             _db.SaveChanges();
         }
         
+        public void UpdateProjectPriority(int id, int projectPriority)
+        {
+            // Don't allow inputted priority to be more than 1 larger than the largest priority project
+            var highestPriority = _db.Projects.OrderByDescending(x => x.Priority).FirstOrDefault().Priority;
+            
+            if ((projectPriority - highestPriority) > 1)
+                projectPriority = (int) highestPriority;
+
+            // Change priority of other rows affected
+            var project = _db.Projects.FirstOrDefault(p => p.Id == id);
+            var projects = projectPriority < project.Priority ? _db.Projects.Where(p => p.Priority >= projectPriority && p.Priority < project.Priority) : _db.Projects.Where(p => p.Priority <= projectPriority && p.Priority > project.Priority);
+            
+            foreach (var project1 in projects)
+            {
+                if (projectPriority < project.Priority)
+                    project1.Priority += 1;
+                else
+                    project1.Priority -= 1;
+            }
+
+            project.Priority = projectPriority;
+            
+            _db.Projects.Update(project);
+            _db.Projects.UpdateRange(projects);
+            _db.SaveChanges();
+        }
+        
         public void UpdateProjectTaskProgress(int id, ProjectTaskProgress projectProgress)
         {
             // If project with name already exists, return false

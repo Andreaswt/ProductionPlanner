@@ -25,7 +25,8 @@ namespace ProductionPlanner.ViewComponents
                 Project = await GetProject(id),
                 TotalProjectCount = await GetTotalProjectCount()
             };
-            projectDetailsViewModel.Project.ProjectTasks.OrderBy(p => p.Priority);
+            
+            projectDetailsViewModel.Project.ProjectTasks.Sort();
 
             return View(projectDetailsViewModel);
         }

@@ -6,7 +6,7 @@ using ProductionPlanner.Enums;
 
 namespace ProductionPlanner.Models
 {
-    public class ProjectTask
+    public class ProjectTask : IComparable<ProjectTask>
     {
         [Key]
         public int Id { get; set; }
@@ -31,5 +31,15 @@ namespace ProductionPlanner.Models
         public bool Assigned { get; set; }
         public string? PersonAssigned { get; set; }
         public bool Subtask { get; set; }
+        public int CompareTo(ProjectTask? other)
+        {
+            if (other.Priority > this.Priority)
+                return -1;
+            
+            if (other.Priority < this.Priority)
+                return 1;
+            
+            return 0;
+        }
     }
 }

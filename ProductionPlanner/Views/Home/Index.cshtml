@@ -346,9 +346,13 @@ This example requires updating your template:
                 
                 /* ---Project list view page--- */
                 projectDetails: false,
+                changeProjectPriority: false,
                 
                 showProjectDetails(state) {
                     this.projectDetails = state
+                },
+                showChangeProjectPriority(state) {
+                    this.changeProjectPriority = state
                 },
             })
         })

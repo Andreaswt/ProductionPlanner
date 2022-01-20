@@ -1,4 +1,5 @@
--Projectdetails page: Sort projecttasks by priority, after changing projecttask progress.
+-Project column view
++Sort algorithm: Pending changes text and Update button. Small loading spinner+ajax loading in background.
 
 Later:
 -Project templates: show users which options are selected (Alpine/tailwind)

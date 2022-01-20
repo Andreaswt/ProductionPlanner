@@ -13,6 +13,7 @@ namespace ProductionPlanner.Interfaces
         public void DeleteProjectTemplate(int id);
         public bool CreateProject(ProjectTemplate projectTemplate);
         public void UpdateProjectProgress(int id, ProjectProgress projectProgress);
+        public void UpdateProjectPriority(int id, int projectPriority);
         public void UpdateProjectTaskProgress(int id, ProjectTaskProgress projectProgress);
     }
 }
