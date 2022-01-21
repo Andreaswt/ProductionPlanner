@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProductionPlanner.Data;
 using ProductionPlanner.Enums;
@@ -18,10 +19,15 @@ namespace ProductionPlanner.Services
         {
             _db = applicationDbContext;
         }
+
+        public List<Project> GetProjects()
+        {
+            return _db.Projects.Include(p => p.ProjectTasks).OrderBy(t => t.Priority).ToList();
+        }
         
         public void SaveWeeks(List<Week> weeks)
         {
-            _db.Weeks.AddRange(weeks);
+            _db.Weeks.UpdateRange(weeks);
             _db.SaveChanges();
         }
 
@@ -29,6 +35,11 @@ namespace ProductionPlanner.Services
         {
             // Eager load related data
             return _db.Weeks.Include(w => w.Days).ThenInclude(d => d.Tasks).ToList();
+        }
+
+        public Day? GetDay(DateTime date)
+        {
+            return _db.Days.FirstOrDefault(d => d.Date == date);
         }
 
         public bool SaveProjectTemplate(ProjectTemplate projectTemplate)

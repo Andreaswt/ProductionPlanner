@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductionPlanner.Data;
 
@@ -10,9 +11,10 @@ using ProductionPlanner.Data;
 namespace ProductionPlanner.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220121125917_21jan2")]
+    partial class _21jan2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
@@ -241,7 +243,7 @@ namespace ProductionPlanner.Migrations
 
                     b.HasIndex("WeekId");
 
-                    b.ToTable("Days");
+                    b.ToTable("Day");
                 });
 
             modelBuilder.Entity("ProductionPlanner.Models.Project", b =>

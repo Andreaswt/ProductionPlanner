@@ -36,15 +36,16 @@ namespace ProductionPlanner.Controllers
         {
             PlannerViewModel plannerViewModel = new();
             
-            // var mock = _plannerService.MockData();
-            //
-            // // Save to database
-            // _dataService.SaveWeeks(_plannerService.AssignProjects(mock));
-
             // Get from database
             plannerViewModel.Weeks = _dataService.GetWeeks();
 
             return View(plannerViewModel);
+        }
+
+        public IActionResult SortWeeks()
+        {
+            var weeks = _plannerService.AssignProjects(true);
+            return ViewComponent("ProjectColumn", new { weeks =  weeks });
         }
 
         [HttpPost]

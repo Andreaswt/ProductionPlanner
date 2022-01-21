@@ -9,7 +9,7 @@ namespace ProductionPlanner.Models
     {
         [Key]
         public int Id { get; set; }
-        public List<ProjectTask> Tasks { get; set; }
+        public List<ProjectTask>? Tasks { get; set; }
         public DateTime Date { get; set; }
         public int AvailableHours { get; set; }
         public int HoursLeftToBook { get; set; }

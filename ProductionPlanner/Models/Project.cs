@@ -18,7 +18,7 @@ namespace ProductionPlanner.Models
         public List<ProjectTask>? ProjectTasks { get; set; }
         public DateTime? Created { get; set; }
         public ProjectProgress Progress { get; set; } = ProjectProgress.Todo;
-        public int TotalHours
+        public int? TotalHours
         {
             get
             {

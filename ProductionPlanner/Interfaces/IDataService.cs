@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ProductionPlanner.Enums;
 using ProductionPlanner.Models;
 
@@ -6,8 +8,10 @@ namespace ProductionPlanner.Interfaces
 {
     public interface IDataService
     {
+        public List<Project> GetProjects();
         public void SaveWeeks(List<Week> weeks);
         public List<Week> GetWeeks();
+        public Day? GetDay(DateTime date);
         public bool SaveProjectTemplate(ProjectTemplate projectTemplate);
         public void EditProjectTemplate(ProjectTemplate projectTemplate);
         public void DeleteProjectTemplate(int id);

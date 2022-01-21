@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -13,14 +14,22 @@ namespace ProductionPlanner.Services
 {
     public class PlannerService : IPlannerService
     {
-        public List<Week> AssignProjects(List<Project> projects)
+        private readonly IDataService _dataService;
+        public PlannerService(IDataService dataService)
         {
-            var sortedProjects = projects.OrderBy(t => t.Priority).ToList();
-            var sortedTasks = GetSortedTasks(sortedProjects);
+            _dataService = dataService;
+        }
+        public List<Week> AssignProjects(bool saveToDB)
+        {
+            DateTime dateTracker = DateTime.Today;
 
+            var sortedProjects = _dataService.GetProjects();
+            var sortedTasks = GetSortedTasks(sortedProjects);
+            sortedTasks.ForEach(p => p.Assigned = false);
+            
             List<Week> weeks = new();
 
-            Week week = AddNewWeek();
+            Week week = AddNewWeek(dateTracker);
             ProjectTask subtask = null;
             foreach (ProjectTask task in sortedTasks)
             {
@@ -33,7 +42,10 @@ namespace ProductionPlanner.Services
                         if (GetTotalHoursLeftToBook(week) == 0)
                         {
                             weeks.Add(week);
-                            week = AddNewWeek();
+                            
+                            // Change the week 
+                            dateTracker = dateTracker.AddDays(3);
+                            week = AddNewWeek(dateTracker);
                         }
 
                         foreach (Day day in GetSortedDays(week.Days))
@@ -60,7 +72,7 @@ namespace ProductionPlanner.Services
                                 subtask.Duration = day.HoursLeftToBook;
                                 day.HoursLeftToBook -= day.HoursLeftToBook;
                                 subtask.Assigned = true;
-                                
+
                                 day.Tasks.Add(subtask);
                                 
                                 // Deep clone subtask
@@ -90,6 +102,9 @@ namespace ProductionPlanner.Services
             
             // If a week was partly filled, it wasn't added in the above foreach
             weeks.Add(week);
+
+            if (saveToDB)
+                _dataService.SaveWeeks(weeks);
             
             return weeks;
         }
@@ -126,22 +141,32 @@ namespace ProductionPlanner.Services
             return totalHours;
         }
 
-        private Week AddNewWeek()
+        private Week AddNewWeek(DateTime fromDate)
         {
-            var days = new List<Day>
+            List<Day> days = new()
             {
-                new Day { DayName = "Monday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 1), Tasks = new List<ProjectTask>()},
-                new Day { DayName = "Tuesday", Priority = 2, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 2), Tasks = new List<ProjectTask>() },
-                new Day { DayName = "Wednesday", Priority = 3, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 3), Tasks = new List<ProjectTask>() },
-                new Day { DayName = "Thursday", Priority = 4, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 4), Tasks = new List<ProjectTask>() },
-                new Day { DayName = "Friday", Priority = 5, AvailableHours = 8, HoursLeftToBook = 8, Date = new DateTime(2021, 12, 5), Tasks = new List<ProjectTask>() },
-                /*new Day { DayName = "Saturday", Priority = 6, AvailableHours = 0, HoursLeftToBook = 0, Date = new DateTime(2021, 12, 6) },
-                new Day { DayName = "Sunday", Priority = 7, AvailableHours = 0, HoursLeftToBook = 0, Date = new DateTime(2021, 12, 7) },*/
+                // Monday
+                new Day { DayName = "Monday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate, Tasks = new List<ProjectTask>()},
+                // Tuesday
+                new Day { DayName = "Tuesday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(1), Tasks = new List<ProjectTask>()},
+                // Wednesday
+                new Day { DayName = "Wednesday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(2), Tasks = new List<ProjectTask>()},
+                // Thursday
+                new Day { DayName = "Thursday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(3), Tasks = new List<ProjectTask>()},
+                // Friday
+                new Day { DayName = "Friday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(4), Tasks = new List<ProjectTask>()}
             };
             
-            Week week = new Week
+            // Get current week NO
+            CultureInfo myCI = new CultureInfo("en-US");
+            Calendar myCal = myCI.Calendar;
+            CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
+            DayOfWeek myFirstDOW = myCI.DateTimeFormat.FirstDayOfWeek;
+            
+            Week week = new()
             {
-                Days = days
+                Days = days,
+                WeekNo = myCal.GetWeekOfYear( fromDate, myCWR, myFirstDOW )
             };
 
             return week;

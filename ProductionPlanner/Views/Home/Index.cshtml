@@ -67,7 +67,7 @@ This example requires updating your template:
             <nav aria-label="Sidebar" class="mt-5">
                 <div class="px-2 space-y-1">
                     <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-                    <a x-on:click="$store.page.showColumnView()" href="#" class="bg-gray-100 text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                    <a x-on:click="$store.page.showDashboard()" href="#" class="bg-gray-100 text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
                         <!--
                         Heroicon name: outline/home
 
@@ -78,13 +78,13 @@ This example requires updating your template:
                         </svg>
                         Dashboard
                     </a>
-
-                    <a x-on:click="$store.page.showProjectTemplate()" href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                    
+                    <a x-on:click="$store.page.showProjectColumn()" href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
                         <!-- Heroicon name: outline/calendar -->
                         <svg class="text-gray-400 group-hover:text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        Project templates
+                        Project Column View
                     </a>
                     
                     <a x-on:click="$store.page.showProjectList()" href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
@@ -92,7 +92,15 @@ This example requires updating your template:
                         <svg class="text-gray-400 group-hover:text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        Project list
+                        Project List
+                    </a>
+
+                    <a x-on:click="$store.page.showProjectTemplate()" href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                        <!-- Heroicon name: outline/calendar -->
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        Project Templates
                     </a>
 
                     <a href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
@@ -165,7 +173,7 @@ This example requires updating your template:
                 <nav class="mt-5 flex-1" aria-label="Sidebar">
                     <div class="px-2 space-y-1">
                         <!-- Current: "bg-gray-200 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-                        <a x-on:click="$store.page.showColumnView()" href="#" class="bg-gray-200 text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <a x-on:click="$store.page.showDashboard()" href="#" class="bg-gray-200 text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                             <!--
                             Heroicon name: outline/home
 
@@ -177,12 +185,20 @@ This example requires updating your template:
                             Dashboard
                         </a>
                         
+                        <a x-on:click="$store.page.showColumnView()" href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <!-- Heroicon name: outline/calendar -->
+                            <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            Project Column View
+                        </a>
+                        
                         <a x-on:click="$store.page.showProjectList()" href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                             <!-- Heroicon name: outline/calendar -->
                             <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
-                            Project list
+                            Project List
                         </a>
 
                         <a x-on:click="$store.page.showProjectTemplate()" href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
@@ -190,7 +206,7 @@ This example requires updating your template:
                             <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
-                            Project templates
+                            Project Templates
                         </a>
 
                         <a href="#" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
@@ -265,8 +281,12 @@ This example requires updating your template:
         </div>
     </div>
     <div class="flex-1 relative z-0 flex overflow-hidden">
-        <main x-cloak x-show="$store.page.current == 'columnView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+        <main x-cloak x-show="$store.page.current == 'dashboard'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
             <partial name="../PlanViews/Columns.cshtml"/>
+        </main>
+        
+        <main id =projectColumnContainer x-cloak x-show="$store.page.current == 'columnView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+            @await Component.InvokeAsync("ProjectColumn")
         </main>
         
         <main id="projectListContainer" x-cloak x-show="$store.page.current == 'projectListView'" class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
@@ -305,6 +325,10 @@ This example requires updating your template:
             Alpine.store('page', {
                 current: "columnView",
      
+                 showDashboard() {
+                     this.current = "dashboard"
+                 },
+                     
                 showColumnView() {
                     this.current = "columnView"
                 },

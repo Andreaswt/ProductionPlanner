@@ -1,5 +1,7 @@
--Project column view
-+Sort algorithm: Pending changes text and Update button. Small loading spinner+ajax loading in background.
+-Hver gang der trykkes update calendar, sker følgende:
++Der laves en ny uge i Weeks tablen (FEJL).
+    +Sørg for at samme uge bliver brugt
+-Hvis man allerede har haft trykket på den en gang, bliver "ProjectId" sat til Null i bla.a. subtasks, i ProjectTasks tablen.
 
 Later:
 -Project templates: show users which options are selected (Alpine/tailwind)

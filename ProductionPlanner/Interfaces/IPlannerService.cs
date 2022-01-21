@@ -6,7 +6,7 @@ namespace ProductionPlanner.Interfaces
 {
     public interface IPlannerService
     {
-        public List<Week> AssignProjects(List<Project> projects);
+        public List<Week> AssignProjects(bool saveToDB);
         public List<Project> MockData();
     }
 }
