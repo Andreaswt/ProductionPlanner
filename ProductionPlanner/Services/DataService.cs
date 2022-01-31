@@ -27,7 +27,42 @@ namespace ProductionPlanner.Services
         
         public void SaveWeeks(List<Week> weeks)
         {
-            _db.Weeks.UpdateRange(weeks);
+            // Check if weeks updated in algorithm contains same week numbers
+            var dbWeeks = _db.Weeks.Include(w => w.Days);
+            foreach (var week in weeks)
+            {
+                // Loop through DB weeks
+                foreach (var weekDb in dbWeeks)
+                {
+                    if (weekDb.WeekNo == week.WeekNo)
+                    {
+                        
+                        // Update existing dates instead of creating new ones
+                        foreach (var dayDb in weekDb.Days)
+                        {
+                            if (weekDb.Days.Any(d => d.Date == dayDb.Date))
+                            {
+                                var day = weekDb.Days.FirstOrDefault(d => d.Date == dayDb.Date);
+                                dayDb.Priority = day.Priority;
+                                dayDb.Tasks = day.Tasks;
+                                dayDb.AvailableHours = day.AvailableHours;
+                                dayDb.HoursLeftToBook = day.HoursLeftToBook;
+                            }
+                        }
+                        
+                        weekDb.Ferie = week.Ferie;
+                        weekDb.WeekNo = week.WeekNo;
+                        weekDb.Year = week.Year;
+                        _db.Weeks.Update(weekDb);
+                    }
+                    else
+                        _db.Weeks.Add(week); // TODO: sørg for at uger ikke bliver tilføjet hver gang der trykkes update
+                }
+            }
+
+            if (!dbWeeks.Any())
+                _db.Weeks.UpdateRange(weeks);
+
             _db.SaveChanges();
         }
 

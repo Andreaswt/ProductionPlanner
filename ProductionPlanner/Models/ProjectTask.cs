@@ -27,6 +27,8 @@ namespace ProductionPlanner.Models
         [Range(0, int.MaxValue)]
         [Required(ErrorMessage = "Please enter a valid duration.")]
         public int Duration { get; set; }
+        
+        public int DurationWhenSorted { get; set; }
         public DateTime Date { get; set; }
         public bool Assigned { get; set; }
         public string? PersonAssigned { get; set; }

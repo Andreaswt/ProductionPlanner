@@ -25,7 +25,14 @@ namespace ProductionPlanner.Services
 
             var sortedProjects = _dataService.GetProjects();
             var sortedTasks = GetSortedTasks(sortedProjects);
-            sortedTasks.ForEach(p => p.Assigned = false);
+            sortedTasks.ForEach(p =>
+            {
+                p.Assigned = false;
+                
+                // DurationWhenSorted is used instead of Duration
+                // Prevents duration of a project task to be changed, when it's split into subtasks
+                p.DurationWhenSorted = p.Duration;
+            });
             
             List<Week> weeks = new();
 
@@ -54,11 +61,11 @@ namespace ProductionPlanner.Services
                                 continue;
                             
                             // Assign task to day
-                            if (day.HoursLeftToBook >= subtask.Duration)
+                            if (day.HoursLeftToBook >= subtask.DurationWhenSorted)
                             {
                                 subtask.Assigned = true;
                                 day.Tasks.Add(subtask);
-                                day.HoursLeftToBook -= subtask.Duration;
+                                day.HoursLeftToBook -= subtask.DurationWhenSorted;
                                 
                                 subtask = null;
                                 
@@ -66,10 +73,10 @@ namespace ProductionPlanner.Services
                             }
                             else
                             {
-                                var totalTaskHours = subtask.Duration;
+                                var totalTaskHours = subtask.DurationWhenSorted;
                                 var hoursBookedToday = day.HoursLeftToBook;
                                 subtask.Subtask = true;
-                                subtask.Duration = day.HoursLeftToBook;
+                                subtask.DurationWhenSorted = day.HoursLeftToBook;
                                 day.HoursLeftToBook -= day.HoursLeftToBook;
                                 subtask.Assigned = true;
 
@@ -83,7 +90,8 @@ namespace ProductionPlanner.Services
                                     Progress = subtask.Progress,
                                     Description = subtask.Description,
                                     Priority = subtask.Priority,
-                                    Duration = subtask.Duration,
+                                    Duration = 0,
+                                    DurationWhenSorted = subtask.DurationWhenSorted,
                                     Date = subtask.Date,
                                     Assigned = subtask.Assigned,
                                     PersonAssigned = subtask.PersonAssigned,
@@ -91,8 +99,7 @@ namespace ProductionPlanner.Services
                                 };
                                 subtask = s;
                                 subtask.Assigned = false;
-                                subtask.Duration = totalTaskHours - hoursBookedToday;
-
+                                subtask.DurationWhenSorted = totalTaskHours - hoursBookedToday;
                                 break;
                             }
                         }
@@ -166,7 +173,7 @@ namespace ProductionPlanner.Services
             Week week = new()
             {
                 Days = days,
-                WeekNo = myCal.GetWeekOfYear( fromDate, myCWR, myFirstDOW )
+                WeekNo = myCal.GetWeekOfYear( fromDate, myCWR, myFirstDOW ) // TODO: fiks ugenummer
             };
 
             return week;
