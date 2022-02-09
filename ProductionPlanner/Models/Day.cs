@@ -13,7 +13,6 @@ namespace ProductionPlanner.Models
         public DateTime Date { get; set; }
         public int AvailableHours { get; set; }
         public int HoursLeftToBook { get; set; }
-        public string? DayName { get; set; }
-        public int Priority { get; set; }
+        public DayOfWeek? DayName { get; set; }
     }
 }

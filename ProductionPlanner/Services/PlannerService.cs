@@ -134,7 +134,7 @@ namespace ProductionPlanner.Services
 
         private List<Day> GetSortedDays(List<Day> days)
         {
-            return days.OrderBy(d => d.Priority).ToList();
+            return days.OrderBy(d => d.DayName).ToList();
         }
 
         private int GetTotalHoursLeftToBook(Week week)
@@ -153,27 +153,52 @@ namespace ProductionPlanner.Services
             List<Day> days = new()
             {
                 // Monday
-                new Day { DayName = "Monday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate, Tasks = new List<ProjectTask>()},
+                new Day { DayName = DayOfWeek.Monday, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate, Tasks = new List<ProjectTask>()},
                 // Tuesday
-                new Day { DayName = "Tuesday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(1), Tasks = new List<ProjectTask>()},
+                new Day { DayName = DayOfWeek.Tuesday, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(1), Tasks = new List<ProjectTask>()},
                 // Wednesday
-                new Day { DayName = "Wednesday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(2), Tasks = new List<ProjectTask>()},
+                new Day { DayName = DayOfWeek.Wednesday, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(2), Tasks = new List<ProjectTask>()},
                 // Thursday
-                new Day { DayName = "Thursday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(3), Tasks = new List<ProjectTask>()},
+                new Day { DayName = DayOfWeek.Thursday, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(3), Tasks = new List<ProjectTask>()},
                 // Friday
-                new Day { DayName = "Friday", Priority = 1, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(4), Tasks = new List<ProjectTask>()}
+                new Day { DayName = DayOfWeek.Friday, AvailableHours = 8, HoursLeftToBook = 8, Date = fromDate.AddDays(4), Tasks = new List<ProjectTask>()}
             };
             
-            // Get current week NO
-            CultureInfo myCI = new CultureInfo("en-US");
-            Calendar myCal = myCI.Calendar;
-            CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
-            DayOfWeek myFirstDOW = myCI.DateTimeFormat.FirstDayOfWeek;
+            // Start at monday by default
+            DayOfWeek myFirstDOW = DayOfWeek.Monday;
             
+            // If today is not monday, start at another day
+            switch (fromDate.DayOfWeek)
+            {
+                case DayOfWeek.Monday: 
+                    myFirstDOW = DayOfWeek.Monday;
+                    break;
+                case DayOfWeek.Tuesday: 
+                    myFirstDOW = DayOfWeek.Tuesday;
+                    break;
+                case DayOfWeek.Wednesday: 
+                    myFirstDOW = DayOfWeek.Wednesday;
+                    break;
+                case DayOfWeek.Thursday: 
+                    myFirstDOW = DayOfWeek.Thursday;
+                    break;
+                case DayOfWeek.Friday: 
+                    myFirstDOW = DayOfWeek.Friday;
+                    break;
+            }
+            
+            // If we start in the middle of a week, don't fill days that have already passed
+            if (fromDate.DayOfWeek != DayOfWeek.Monday)
+            {
+                days.Where(x => x.DayName < fromDate.DayOfWeek)
+                    .ToList()
+                    .ForEach(d => d.HoursLeftToBook = 0);
+            }
+
             Week week = new()
             {
                 Days = days,
-                WeekNo = myCal.GetWeekOfYear( fromDate, myCWR, myFirstDOW ) // TODO: fiks ugenummer
+                WeekNo = ISOWeek.GetWeekOfYear(fromDate)
             };
 
             return week;

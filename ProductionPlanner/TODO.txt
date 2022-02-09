@@ -1,5 +1,4 @@
--Sorteringsalgoritme: sørg for at ugenr altid er korrekt.
--Når man trykket update for anden gang, bliver der stadig oprettet nye uger i databasen.
+-PlannerService: Hvis man tilføjer opgaver til mere end en uge og opdaterer, bliver der lavet to uger med samme nummer.
 
 Later:
 -Project templates: show users which options are selected (Alpine/tailwind)

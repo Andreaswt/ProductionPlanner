@@ -43,7 +43,6 @@ namespace ProductionPlanner.Services
                             if (weekDb.Days.Any(d => d.Date == dayDb.Date))
                             {
                                 var day = weekDb.Days.FirstOrDefault(d => d.Date == dayDb.Date);
-                                dayDb.Priority = day.Priority;
                                 dayDb.Tasks = day.Tasks;
                                 dayDb.AvailableHours = day.AvailableHours;
                                 dayDb.HoursLeftToBook = day.HoursLeftToBook;
